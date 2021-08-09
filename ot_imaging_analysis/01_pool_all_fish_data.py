@@ -23,8 +23,8 @@ for df_path in tqdm(MASTER_PATH.glob("*/cell_df.h5")):
     mn_amplitude = cell_df.loc[above_rel_thr, "max_amp"].mean()
 
     exp_dfs.append(dict(fid=cell_df.loc[0, "fid"],
-                        gen=cell_df.loc[0, "fid"],
-                        gen_long=cell_df.loc[0, "fid"],
+                        gen=cell_df.loc[0, "gen"],
+                        gen_long=cell_df.loc[0, "gen_long"],
                         n_cells=len(cell_df),
                         above_rel_thr=sum(above_rel_thr),
                         mn_amplitude=mn_amplitude))
