@@ -7,13 +7,10 @@ import flammkuchen as fl
 import numpy as np
 import seaborn as sns
 
-from xiao_et_al_utils.plotting import plot_config, add_fish, despine
+from xiao_et_al_utils.plotting import plot_config, add_fish, despine, LetteredFigure
 
-sns.set(palette="deep")
+sns.set(palette="deep", style="ticks")
 cols = sns.color_palette()
-
-matplotlib.use('qt5agg')
-
 
 plot_config()
 
@@ -32,9 +29,9 @@ exp = EmbeddedExperiment(path)
 
 print("generating figure...")
 
-fig_a = plt.figure(figsize=(2.5, 3))
+fig_a = LetteredFigure("a", figsize=(2.5, 3))  # plt.figure()
 
-xpos, ypos, side = 0.1, 0.6, 0.16
+xpos, ypos, side = 0.1, 0.7, 0.16
 axs = [fig_a.add_axes((xpos + side * 1.1 * i, ypos, side, side)) for i in range(5)]
 
 clip_masks = [s["clip_mask"] for s in exp["stimulus"]["log"][1::2]]
@@ -56,7 +53,7 @@ for ax, title, stim_n in zip(axs, titles, stimuli):
 planes = [2, 6]
 pad = 10
 
-an_ax = fig_a.add_axes((0, 0, 1, 0.5))
+an_ax = fig_a.add_axes((0, 0.1, 1, 0.5))
 an_ax.imshow(np.concatenate([anatomy[i, pad:-pad, pad:-pad] for i in planes]).T,
              cmap="gray_r", origin="lower", vmax=100, vmin=0)
 an_ax.contour(np.concatenate([ot_mask[i, pad:-pad, pad:-pad] for i in planes],
@@ -76,10 +73,8 @@ for ax, labels, bar_pos_y in zip(axs, [["caud-rost", "l-r"], ["vent-dors"]], [40
 an_ax.text(anatomy.shape[1] * 2 - pad * 5, anatomy.shape[1] - pad * 7,
            "Huc:H2B-GCaMP6s", fontsize=7, ha="right", va="top", c=(0.5,) * 3)
 
-plt.axis("off")
-
-plt.show()
+despine(an_ax, sides="all")
 
 fig_path = Path(config.get('main', 'fig_path'))
 fig_path.mkdir(exist_ok=True)
-fig_a.savefig(Path(config.get('main', 'fig_path')) / "fig_a.pdf")
+fig_a.savefig(Path(config.get('main', 'fig_path')))

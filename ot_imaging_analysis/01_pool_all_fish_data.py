@@ -15,10 +15,9 @@ cell_dfs = []
 exp_dfs = []
 for df_path in tqdm(MASTER_PATH.glob("*/cell_df.h5")):
     cell_df = fl.load(df_path)
-    cell_dfs.append(cell_df)
 
     # get the selections array for cells above threshold:
-    above_rel_thr = cell_df["in_tectum"] & cell_df["max_rel"] > REL_SCORE_THR
+    above_rel_thr = cell_df["in_tectum"] & (cell_df["max_rel"] > REL_SCORE_THR)
 
     # Compute mean amplitude:
     mn_amplitude = cell_df.loc[above_rel_thr, "max_amp"].mean()
@@ -26,6 +25,7 @@ for df_path in tqdm(MASTER_PATH.glob("*/cell_df.h5")):
     exp_dfs.append(dict(fid=cell_df.loc[0, "fid"],
                         gen=cell_df.loc[0, "fid"],
                         gen_long=cell_df.loc[0, "fid"],
+                        n_cells=len(cell_df),
                         above_rel_thr=sum(above_rel_thr),
                         mn_amplitude=mn_amplitude))
     cell_dfs.append(cell_df)
