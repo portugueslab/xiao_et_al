@@ -2,6 +2,31 @@ from svgpath2mpl import parse_path
 from matplotlib import collections
 from matplotlib import pyplot as plt
 import numpy as np
+from matplotlib.pyplot import Figure
+from pathlib import Path
+
+
+def _add_lettering(f, letter, s=0.05, **kwargs):
+    letter_ax = f.add_axes((0, 1 - s, s, s))
+    letter_ax.text(0, 0, letter, ha="left", va="top", fontsize=14, **kwargs)
+    letter_ax.set(xlim=(0, 1), ylim=(-1, 0))
+
+    letter_ax.axis("off")
+
+    return letter_ax
+
+
+class LetteredFigure(Figure):
+    def __init__(self, letter, *args, **kwargs):
+        self.letter = letter
+
+        super().__init__(*args, **kwargs)
+        self.patch.set_alpha(0.)
+        _add_lettering(self, letter.upper())
+
+    def savefig(self, folder, **kwargs):
+        super().savefig(str(folder / f"fig_{self.letter}.pdf"), transparent=True,
+                        **kwargs)
 
 
 def plot_config():

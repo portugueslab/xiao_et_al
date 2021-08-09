@@ -120,6 +120,13 @@ for path in tqdm(path_list):
     df["x"] = coords[:, 1] * PX_SIZE  # a-p pos
     df["y"] = coords[:, 2] * PX_SIZE  # l-r pos
 
+    # rigid coordinate translation using manually defined translations:
+    offsets = all_offsets[path.name]
+    coords -= offsets
+    df["z_trasf"] = coords[:, 0] * z_res  # vertical pos
+    df["x_trasf"] = coords[:, 1] * PX_SIZE  # a-p pos
+    df["y_trasf"] = coords[:, 2] * PX_SIZE  # l-r pos
+
     fl.save(path / "cell_df.h5", df)
 
 # Save for quick loading in cumulative plots:

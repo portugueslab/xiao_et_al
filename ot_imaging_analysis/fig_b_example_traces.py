@@ -14,7 +14,7 @@ matplotlib.use('qt5agg')
 
 from xiao_et_al_utils.imaging import preprocess_traces
 from xiao_et_al_utils.behavior_and_stimuli import stimulus_df_from_exp0070
-from xiao_et_al_utils.plotting import plot_config
+from xiao_et_al_utils.plotting import plot_config, LetteredFigure
 
 plot_config()
 
@@ -67,7 +67,7 @@ rel_scores = cells_df.loc[:, [f"rel_{i}" for i in range(len(stim_pos))]].values.
 
 print("generating figure...")
 
-fig_b = plt.figure(figsize=(7, 3))
+fig_b = LetteredFigure(letter="b", figsize=(7, 3))
 
 m_xpos, m_ypos, xside, yside = 0.15, 0., 0.43, 1
 bounds_lims = [(m_xpos + xside * 1.05 * i, m_ypos, xside, yside) for i in range(2)]
@@ -150,4 +150,4 @@ for c_n, (i_cell, (xpos, ypos, xside, yside)) in enumerate(
     anatomy_ax.contour(ot_mask[cell_plane, :, :], origin="lower", levels=[1],
                        linewidths=0.5, colors=[(0.5,) * 3])
     anatomy_ax.axis("off")
-fig_b.savefig(Path(config.get('main', 'fig_path')) / "fig_b.pdf")
+fig_b.savefig(Path(config.get('main', 'fig_path')))
