@@ -3,7 +3,6 @@ from matplotlib import collections
 from matplotlib import pyplot as plt
 import numpy as np
 from matplotlib.pyplot import Figure
-from pathlib import Path
 
 
 def _add_lettering(f, letter, s=0.05, **kwargs):
@@ -25,7 +24,7 @@ class LetteredFigure(Figure):
         _add_lettering(self, letter.upper())
 
     def savefig(self, folder, **kwargs):
-        super().savefig(str(folder / f"fig_{self.letter}.pdf"), transparent=True,
+        super().savefig(str(folder / f"fig_{self.letter}.svg"), transparent=True,
                         **kwargs)
 
 
@@ -35,6 +34,9 @@ def plot_config():
     plt.rcParams['axes.labelsize'] = 8
     plt.rcParams["legend.fontsize"] = 8
     plt.rcParams["axes.titlesize"] = 8
+    plt.rcParams['svg.fonttype'] = 'none'
+    plt.rcParams['pdf.use14corefonts'] = True
+
     for t in ["x", "y"]:
         plt.rcParams[t + 'tick.major.size'] = 3
         plt.rcParams[t + 'tick.labelsize'] = 8

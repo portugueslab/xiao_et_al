@@ -9,4 +9,7 @@ The following experiment scripts were used to run experiments with `stytra==0.8.
  ## Behavior data analysis:
  - `Freely swimming analysis.ipynb`: Jupyter Notebook for analyzing the no stimulation, freely swimming larvae experiments reported in Fig.2 and Fig.S3.
  - `OMR - visual acuity random gratings.ipynb`: Jupyter Notebook for analyzing the curve of contrast for the OMR response in embedded fish reported in Fig.2 and Fig.S3.
+ 
+ ## Lightsheet imaging data analysis:
+ - 
 

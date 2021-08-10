@@ -113,9 +113,6 @@ for path in tqdm(path_list):
     df["max_rel_i"] = np.argmax(rel_scores, 0)  # maximum reliability position
     df["max_amp"] = np.nanmax(amp_scores, 0)  # maximum amplitude
 
-    offsets = all_offsets[path.name]
-    coords -= offsets
-
     df["z"] = coords[:, 0]  # vertical pos, planes
     df["x"] = coords[:, 1]  # a-p pos, pixels
     df["y"] = coords[:, 2]  # l-r pos, pixels

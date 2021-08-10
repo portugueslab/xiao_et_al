@@ -67,9 +67,9 @@ rel_scores = cells_df.loc[:, [f"rel_{i}" for i in range(len(stim_pos))]].values.
 
 print("generating figure...")
 
-fig_b = LetteredFigure(letter="b", figsize=(7, 3))
+fig_b = LetteredFigure(letter="b", figsize=(5.5, 3))
 
-m_xpos, m_ypos, xside, yside = 0.15, 0., 0.43, 1
+m_xpos, m_ypos, xside, yside = 0.1, 0.08, 0.43, 0.84
 bounds_lims = [(m_xpos + xside * 1.05 * i, m_ypos, xside, yside) for i in range(2)]
 
 x_time = np.arange(0, cropped.shape[0]) / fs - PRE_INT_S  # time array

@@ -48,8 +48,8 @@ popt_singleneuron, pcov = curve_fit(gaussian, x, y_single_neuron,
 
 x_range = _conv_to_dist(np.arange(n_pos))
 
-m_xpos, m_ypos, xside, yside = 0.3, 0.25, 0.6, 0.25
-fig_f = LetteredFigure(letter="f", figsize=(3, 3))
+m_xpos, m_ypos, xside, yside = 0.3, 0.25, 0.6, 0.3
+fig_f = LetteredFigure(letter="f", figsize=(2, 2))
 axs = [fig_f.add_axes((m_xpos, m_ypos + + 1.2 * i * yside,
                        xside, yside)) for i in range(2)]
 

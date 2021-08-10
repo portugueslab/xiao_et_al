@@ -52,9 +52,9 @@ group_colors = [(0.2,) * 3, cols[2]]
 
 def hist_and_scatter(fig, hist_key, hist_range=None, hist_label=None, scatter_key=None,
                      scatter_coef=1., scatter_label=None, ylim=None):
-    SCAT_DISP = 50  # scatter dispersion
-    hist_box = (0.18, 0.25, 0.4, 0.5)
-    scat_box = (0.75, 0.25, 0.25, 0.5)
+    SCAT_DISP = 5  # scatter dispersion
+    hist_box = (0.12, 0.25, 0.4, 0.5)
+    scat_box = (0.72, 0.25, 0.28, 0.5)
     p_val_size = 8
 
     gen_groups = ["MTZ-cnt", "OPC-abl"]
@@ -78,14 +78,14 @@ def hist_and_scatter(fig, hist_key, hist_range=None, hist_label=None, scatter_ke
         axs.plot(x_bins, rel_histograms[g].mean(0), c=group_colors[i], lw=2, label=g)
     plt.legend(frameon=False)
     axs.set(yscale="log", xlabel=hist_label)
-    axs.set_ylabel("log(p)")
+    axs.set_ylabel("log(p)", loc="top", rotation=0, labelpad=-15)
     despine(axs)
 
     scat_axs = fig.add_axes(scat_box)
     for i, g in enumerate(gen_groups):
         sel = exp_df.loc[exp_df["gen"] == g, scatter_key]
-        scat_axs.scatter(np.random.randn(len(sel)) / SCAT_DISP + i, sel * scatter_coef,
-                         c=group_colors[i], s=8)
+        scat_axs.scatter((np.random.rand(len(sel)) - 0.5) / SCAT_DISP + i, sel * scatter_coef,
+                         c=group_colors[i], s=10, lw=0.3, ec=(1,)*3)
     diff_p = ranksums(
         *[exp_df.loc[exp_df["gen"] == g, scatter_key] for g in gen_groups])
     scat_axs.set(xlim=[-0.5, 1.5], xticks=[0, 1], xticklabels=gen_groups,
@@ -110,7 +110,7 @@ def hist_and_scatter(fig, hist_key, hist_range=None, hist_label=None, scatter_ke
     return axs, scat_axs
 
 
-fig_d = LetteredFigure(letter="d", figsize=HIST_FIG_SIZE)
+fig_d = LetteredFigure(letter="d", figsize=(3.2, 2))
 axs, scat_axs = hist_and_scatter(fig_d, hist_key="max_rel",
                                  hist_range=np.arange(0, 1, 0.02),
                                  hist_label="reliability score",
@@ -121,17 +121,18 @@ axs, scat_axs = hist_and_scatter(fig_d, hist_key="max_rel",
 axs.axvline(0.5, lw=0.5, c=(0.4,) * 3)
 fig_d.savefig(Path(config.get('main', 'fig_path')))
 
-fig_e = LetteredFigure(letter="e", figsize=(4.5, 3))
-axs, scat_axs = hist_and_scatter(fig_e, hist_key="max_amp", hist_range=np.arange(0, 6, 0.2),
-                 hist_label="response amplitude  ($\Delta F/F$)", scatter_key="mn_amplitude",
-                 scatter_label="average amplitude ($\Delta F/F$)",
+fig_e = LetteredFigure(letter="e", figsize=(3.2, 2))
+axs, scat_axs = hist_and_scatter(fig_e, hist_key="max_amp", hist_range=np.arange(0, 5, 0.2),
+                 hist_label="response ampl.  ($\Delta F/F$)", scatter_key="mn_amplitude",
+                 scatter_label="average ampl. ($\Delta F/F$)",
                  ylim=(0, 1.),
                  )
 fig_e.savefig(Path(config.get('main', 'fig_path')))
 
-fig_g = LetteredFigure(letter="g", figsize=(4.5, 3))
+fig_g = LetteredFigure(letter="g", figsize=(3.2, 2))
 axs, scat_axs = hist_and_scatter(fig_g, hist_key="fit_sigma", hist_range=np.arange(0, 8, 0.2),
                  hist_label="$\sigma$", scatter_key="mean_sigma",
                  scatter_label="average $\sigma$",
+                 ylim=(0, 3.5),
                  )
 fig_g.savefig(Path(config.get('main', 'fig_path')))

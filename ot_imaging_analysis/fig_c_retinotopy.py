@@ -40,7 +40,7 @@ responsive = all_responses.max(0) > config.getfloat('main', 'rel_score_thr')
 all_peaks = np.argmax(all_responses, 0)
 
 
-fig_c = LetteredFigure(letter="c", figsize=(6.5, 3))
+fig_c = LetteredFigure(letter="c", figsize=(4.5, 2))
 m_xpos, m_ypos, xside, yside = 0.05, 0.1, 0.7, 0.7
 anat_scatt_size = 1
 
@@ -67,7 +67,6 @@ for g_i, g in enumerate(["MTZ-cnt", "OPC-abl"]):
     b_len = 100
     bar_pos_x = -260
     if g_i == 0:
-        print(g_i)
         for labels, bar_pos_y in zip([["caud-rost", "l-r"], ["vent-dors", "l-r"]],
                                      [100, 100 - spacing]):
             axs.plot([bar_pos_x, bar_pos_x, bar_pos_x + b_len],
