@@ -116,16 +116,16 @@ for path in tqdm(path_list):
     offsets = all_offsets[path.name]
     coords -= offsets
 
-    df["z"] = coords[:, 0] * z_res  # vertical pos
-    df["x"] = coords[:, 1] * PX_SIZE  # a-p pos
-    df["y"] = coords[:, 2] * PX_SIZE  # l-r pos
+    df["z"] = coords[:, 0]  # vertical pos, planes
+    df["x"] = coords[:, 1]  # a-p pos, pixels
+    df["y"] = coords[:, 2]  # l-r pos, pixels
 
     # rigid coordinate translation using manually defined translations:
     offsets = all_offsets[path.name]
     coords -= offsets
     df["z_trasf"] = coords[:, 0] * z_res  # vertical pos
-    df["x_trasf"] = coords[:, 1] * PX_SIZE  # a-p pos
-    df["y_trasf"] = coords[:, 2] * PX_SIZE  # l-r pos
+    df["x_trasf"] = coords[:, 1] * PX_SIZE  # a-p pos, um
+    df["y_trasf"] = coords[:, 2] * PX_SIZE  # l-r pos, um
 
     fl.save(path / "cell_df.h5", df)
 

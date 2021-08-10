@@ -56,7 +56,7 @@ axs = [fig_f.add_axes((m_xpos, m_ypos + + 1.2 * i * yside,
 data = pooled_data_df.loc[(pooled_data_df["max_rel"] > rel_score_thr) & pooled_data_df["in_tectum"],
                           [f"rel_reord_{i}" for i in range(36)]].values.T
 data = data / data[18, :]
-axs[1].plot(x_range, data[:, ::10], lw=0.3, c=(0.8,) * 3)
+axs[1].plot(x_range, data[:, ::10], lw=0.3, c=(0.8,) * 3, rasterized=True)
 
 axs[1].plot(x_range, np.nanmedian(data, 1), lw=2, c=(0.5,) * 3)
 
@@ -76,4 +76,4 @@ axs[1].set(xticklabels=[], ylabel="reliability")
 despine(axs[0])
 despine(axs[1])
 
-fig_f.savefig(Path(config.get('main', 'fig_path')))
+fig_f.savefig(Path(config.get('main', 'fig_path')), dpi=600)

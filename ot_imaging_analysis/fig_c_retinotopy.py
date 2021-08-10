@@ -53,7 +53,7 @@ for g_i, g in enumerate(["MTZ-cnt", "OPC-abl"]):
     filt = responsive & all_in_tectum & (pooled_data["gen"] == g)
     axs.scatter(all_coords[filt, 1], all_coords[filt, 2],
                 c=_shift_90_deg(stim_thetas[all_peaks[filt]]),
-                cmap="twilight_shifted", s=anat_scatt_size)
+                cmap="twilight_shifted", s=anat_scatt_size, rasterized=True)
     axs.set_aspect('equal', adjustable='box')
     axs.set_title(g)
     despine(axs, sides="all")
@@ -62,7 +62,7 @@ for g_i, g in enumerate(["MTZ-cnt", "OPC-abl"]):
     axs.scatter(all_coords[filt, 1],
                 all_coords[filt, 0] - spacing + np.random.rand(sum(filt)) * 14,
                 c=_shift_90_deg(stim_thetas[all_peaks[filt]]),
-                cmap="twilight_shifted", s=anat_scatt_size)
+                cmap="twilight_shifted", s=anat_scatt_size, rasterized=True)
 
     b_len = 100
     bar_pos_x = -260
@@ -88,4 +88,4 @@ axs.axis("equal")
 axs.axis("off")
 add_fish(axs, offset=[0.45, 0.0], scale=1.7)
 
-fig_c.savefig(Path(config.get('main', 'fig_path')))
+fig_c.savefig(Path(config.get('main', 'fig_path')), dpi=600)
