@@ -82,19 +82,27 @@ def hist_and_scatter(fig, hist_key, hist_range=None, hist_label=None, scatter_ke
     despine(axs)
 
     scat_axs = fig.add_axes(scat_box)
+    percentiles = dict()
     for i, g in enumerate(gen_groups):
         sel = exp_df.loc[exp_df["gen"] == g, scatter_key]
         scat_axs.scatter((np.random.rand(len(sel)) - 0.5) / SCAT_DISP + i, sel * scatter_coef,
-                         c=group_colors[i], s=10, lw=0.3, ec=(1,)*3)
+                         c=group_colors[i], s=8, lw=0.3, ec=(1,)*3)
+        percentiles[g] = np.percentile(sel, [50, 25, 75])
+
+        l_dict = dict(lw=1, c=group_colors[i])
+        scat_axs.boxplot(sel, showcaps=False, whis=0, sym="", widths=0.2, positions=[i],
+                         boxprops=l_dict, medianprops=l_dict, zorder=-100)
     diff_p = ranksums(
         *[exp_df.loc[exp_df["gen"] == g, scatter_key] for g in gen_groups])
     scat_axs.set(xlim=[-0.5, 1.5], xticks=[0, 1], xticklabels=gen_groups,
                  ylabel=scatter_label)
 
+
     if ylim is not None:
         scat_axs.set_ylim(ylim)
 
-    print(f"p={diff_p.pvalue:0.4f}")
+    percent_str = "median[quartiles]= " + str(percentiles["MTZ-cnt"]) + " (MTZ-cnt); " + str(percentiles["OPC-abl"]) + " (OPC-abl)"
+    print(f"p={diff_p.pvalue:0.4f}, U={diff_p.statistic:0.4f}, {percent_str}")
     pval = "n.s."
     if diff_p.pvalue < 0.05:
         pval = "*"
