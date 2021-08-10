@@ -51,7 +51,7 @@ group_colors = [(0.2,) * 3, cols[2]]
 
 
 def hist_and_scatter(fig, hist_key, hist_range=None, hist_label=None, scatter_key=None,
-                     scatter_coef=1., scatter_label=None):
+                     scatter_coef=1., scatter_label=None, ylim=None):
     SCAT_DISP = 50  # scatter dispersion
     hist_box = (0.18, 0.25, 0.4, 0.5)
     scat_box = (0.75, 0.25, 0.25, 0.5)
@@ -78,7 +78,7 @@ def hist_and_scatter(fig, hist_key, hist_range=None, hist_label=None, scatter_ke
         axs.plot(x_bins, rel_histograms[g].mean(0), c=group_colors[i], lw=2, label=g)
     plt.legend(frameon=False)
     axs.set(yscale="log", xlabel=hist_label)
-    axs.set_ylabel("log(p)", rotation="horizontal", loc="top")
+    axs.set_ylabel("log(p)")
     despine(axs)
 
     scat_axs = fig.add_axes(scat_box)
@@ -90,6 +90,9 @@ def hist_and_scatter(fig, hist_key, hist_range=None, hist_label=None, scatter_ke
         *[exp_df.loc[exp_df["gen"] == g, scatter_key] for g in gen_groups])
     scat_axs.set(xlim=[-0.5, 1.5], xticks=[0, 1], xticklabels=gen_groups,
                  ylabel=scatter_label)
+
+    if ylim is not None:
+        scat_axs.set_ylim(ylim)
 
     print(f"p={diff_p.pvalue:0.4f}")
     pval = "n.s."
@@ -112,16 +115,17 @@ axs, scat_axs = hist_and_scatter(fig_d, hist_key="max_rel",
                                  hist_range=np.arange(0, 1, 0.02),
                                  hist_label="reliability score",
                                  scatter_key="above_rel_thr",
-                                 scatter_coef=1 / 1000,
-                                 scatter_label="responsive rois (thous.)",
+                                 scatter_coef=1,
+                                 scatter_label="responsive rois (n)",
                                  )
 axs.axvline(0.5, lw=0.5, c=(0.4,) * 3)
 fig_d.savefig(Path(config.get('main', 'fig_path')))
 
 fig_e = LetteredFigure(letter="e", figsize=(4.5, 3))
 axs, scat_axs = hist_and_scatter(fig_e, hist_key="max_amp", hist_range=np.arange(0, 6, 0.2),
-                 hist_label="resp. amplitude", scatter_key="mn_amplitude",
-                 scatter_label="average amplitude",
+                 hist_label="response amplitude  ($\Delta F/F$)", scatter_key="mn_amplitude",
+                 scatter_label="average amplitude ($\Delta F/F$)",
+                 ylim=(0, 1.),
                  )
 fig_e.savefig(Path(config.get('main', 'fig_path')))
 

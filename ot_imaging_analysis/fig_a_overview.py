@@ -77,4 +77,4 @@ despine(an_ax, sides="all")
 
 fig_path = Path(config.get('main', 'fig_path'))
 fig_path.mkdir(exist_ok=True)
-fig_a.savefig(Path(config.get('main', 'fig_path')))
+fig_a.savefig(Path(config.get('main', 'fig_path')), dpi=600)

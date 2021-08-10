@@ -16,9 +16,9 @@ config.read('param_conf.ini')
 
 master_path = Path(config.get('main', 'data_path'))
 # Windows for stimulus cropping for reliability index,
-# padding with pre- and post- pause:
+# padding with pre- and post- pause (in seconds):
 PRE_INT_S = 2
-POST_INT_S = 6
+POST_INT_S = 5
 
 # Windows for computing the average response, in seconds from stim start:
 BL_START_S = -2
@@ -79,7 +79,7 @@ for path in tqdm(path_list):
                                int((PRE_INT_S + BL_END_S)*fs))
         rsp_slice = slice(int((PRE_INT_S + RSP_START_S) * fs),
                                int((PRE_INT_S + RSP_END_S) * fs))
-        amp_scores[i] = np.nanmean(np.abs(cropped[rsp_slice, resps_idxs, :].mean(0) -
+        amp_scores[i] = np.nanmean((cropped[rsp_slice, resps_idxs, :].mean(0) -
                           cropped[bl_slice, resps_idxs, :].mean(0)), 0)
 
     # Compute reliability score centered on the position of max response:
