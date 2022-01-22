@@ -29,6 +29,8 @@ class LetteredFigure(Figure):
 
 
 def plot_config():
+    """Configure matplotlib for the figures.
+    """
     # plt.rcParams['figure.constrained_layout.use'] = True
     plt.rcParams['axes.linewidth'] = 0.5
     plt.rcParams['axes.labelsize'] = 8
@@ -44,6 +46,8 @@ def plot_config():
 
 
 def despine(ax, sides=["right", "top"], rmticks=True):
+    """Fine-tuned despine function not to depend on less controllable seaborn one.
+    """
     if sides == "all":
         sides = ["right", "top", "left", "bottom"]
     if rmticks:
