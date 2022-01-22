@@ -76,7 +76,10 @@ x_time = np.arange(0, cropped.shape[0]) / fs - PRE_INT_S  # time array
 for c_n, (i_cell, (xpos, ypos, xside, yside)) in enumerate(
     zip([30, 10818], bounds_lims)
 ):
-
+    # In random subsampled test data, those indexes are not included in the range:
+    if i_cell > coords.shape[0] - 1:
+        i_cell = coords.shape[0] - 1
+    
     cell_plane = int(coords[i_cell, 0])  # plane in which the cell is found
 
     # Get percentiles of responses scaling:
