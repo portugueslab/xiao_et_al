@@ -5,7 +5,11 @@ import pandas as pd
 from lightparam import Param
 from stytra import Stytra
 from stytra.stimulation import Protocol
-from stytra.stimulation.stimuli import Basic_CL_1D, GainChangerStimulus, GratingStimulus
+from stytra.stimulation.stimuli import (
+    Basic_CL_1D,
+    GainChangerStimulus,
+    GratingStimulus,
+)
 
 
 class ClosedLoop1DProt(Protocol):

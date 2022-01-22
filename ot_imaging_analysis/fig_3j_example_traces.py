@@ -7,13 +7,13 @@ from bouter import EmbeddedExperiment
 from bouter.utilities import crop
 from matplotlib import pyplot as plt
 
-sns.set(palette="deep", style="ticks")
-cols = sns.color_palette()
-
 from xiao_et_al_utils.defaults import IMAGING_DATA_MASTER_PATH
 from xiao_et_al_utils.imaging_utils import preprocess_traces
 from xiao_et_al_utils.plotting_utils import save_figure
 from xiao_et_al_utils.stimuli_utils import stimulus_df_from_exp0070
+
+sns.set(palette="deep", style="ticks")
+cols = sns.color_palette()
 
 PRE_INT_S = 2
 POST_INT_S = 5
@@ -79,7 +79,7 @@ for c_n, (i_cell, (xpos, ypos, xside, yside)) in enumerate(
     # In random subsampled test data, those indexes are not included in the range:
     if i_cell > coords.shape[0] - 1:
         i_cell = coords.shape[0] - 1
-    
+
     cell_plane = int(coords[i_cell, 0])  # plane in which the cell is found
 
     # Get percentiles of responses scaling:
