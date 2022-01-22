@@ -39,7 +39,7 @@ Reproduce behavior analysis:
 2. for the OMR analysis, run `> python /.../xiao_et_al/behavior_analysis/omr_analysis.py`
 
 Reproduce imaging analysis:
-1. frun in order the batch processing scripts:  
+1. frun in order the batch processing scripts (they can take up to several tens of minutes to run):  
     - `> python /.../xiao_et_al/ot_imaging_analysis/00_fishwise_scores.py` (extract responses for every fish), 
     - `> python /.../xiao_et_al/ot_imaging_analysis/01_pool_all_fish_data.py` (assemble pooled dataframe with data from all fish) 
     - `> python /.../xiao_et_al/ot_imaging_analysis/02_fit_rf_gauss.py` (gaussian fit)
