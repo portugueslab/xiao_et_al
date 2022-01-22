@@ -8,17 +8,18 @@ The repo contains the following module:
 
 And the following script folders:
  - `stytra_protocols`: Stytra scripts used for running the freely swimming, omr and imaging experiments
- - `behavior_analysis`: scripts for running the analysis of the freely swimming experiments and the OMR experiments.
- - `ot_imaging_analysis`: scripts for running the analysis of the imaging experiments.
+ - `behavior_analysis`: scripts for running the analysis of the freely swimming experiments and the OMR experiments
+ - `ot_imaging_analysis`: scripts for running the analysis of the imaging experiments
 
 ## Stytra stimulation protocols
 The following experiment scripts were used to run experiments with `stytra==0.8.26`:
- - `trackingfish_nostim_exp.py`: script for running the no stimulation, freely swimming larvae experiments reported in Fig.3 and Fig.S3.
- - `OMR_visual_acuity_random_grating_distance.py`: script for running the curve of contrast for the OMR response in embedded fish reported in Fig.3 and Fig.S3.
+ - `trackingfish_nostim_exp.py`: script for running the no stimulation, freely swimming larvae experiments reported in Fig.S6
+ - `OMR_visual_acuity_random_grating_distance.py`: script for running the curve of contrast for the OMR response in embedded fish reported in Fig.3 and Fig.S6
+ - `E0070_v04_flashing_rad_simple.py`: script used for running under the lightsheet microscope the receptive field estimation experiments reported in Fig.3
  
  ## Behavior data analysis:
- - `freely_swimming_analysis.py`: script for analyzing the no stimulation, freely swimming larvae experiments reported in Fig.3 and Fig.S3.
- - `omr_analysis.py`: script for analyzing the curve of contrast for the OMR response in embedded fish reported in Fig.3 and Fig.S3.
+ - `freely_swimming_analysis.py`: script for analyzing the no stimulation, freely swimming larvae experiments reported in Fig.S6
+ - `omr_analysis.py`: script for analyzing the curve of contrast for the OMR response in embedded fish reported in Fig.3 and Fig.S6
  
  ## Lightsheet imaging data analysis:
  Code for replicating the analysis of the functional imaging dataset can be found in the [`ot_imaging_analysis`](https://github.com/portugueslab/xiao_et_al/tree/main/ot_imaging_analysis) folder. To run the analysis:
@@ -43,5 +44,5 @@ Reproduce imaging analysis:
     - `> python /.../xiao_et_al/ot_imaging_analysis/00_fishwise_scores.py` (extract responses for every fish), 
     - `> python /.../xiao_et_al/ot_imaging_analysis/01_pool_all_fish_data.py` (assemble pooled dataframe with data from all fish) 
     - `> python /.../xiao_et_al/ot_imaging_analysis/02_fit_rf_gauss.py` (gaussian fit)
-2. At this point, running any of the figure generation scripts `fig_[x]_[name].py` will save in the figure saving location the relative panel.
+2. At this point, running any of the figure generation scripts `fig_[x]_[name].py` will save in the figure saving location the relative panel
 
