@@ -145,5 +145,14 @@ notebooks_julia/Manifest.toml
 
 #outputs of analyses
 .xiao_et_al_demo_dataset/
+*pdf
+*svg
+*csv
+*xls
+*xlsx
+*stim_pos.h5
+*cell_df.h5
+*pooled_dfs.h5
+*gaussian_fit.h5
 
 
