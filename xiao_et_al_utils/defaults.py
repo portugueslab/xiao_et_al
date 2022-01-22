@@ -18,7 +18,7 @@ OMR_DATA_MASTER_PATH = DATA_MASTER_PATH / "OMR"
 
 # Folder for saved figures:
 FIGURES_PATH = DATA_MASTER_PATH / "figures"
-FIGURES_PATH.mkdir(exist_ok=True)
+FIGURES_PATH.mkdir(exist_ok=True, parents=True)
 
 #############################################################
 # Input parameters for the freely swimming behavior analysis:
