@@ -6,7 +6,7 @@ from pathlib import Path
 config = ConfigParser()
 config.read(Path(__file__).parent.parent / "param_conf.ini")
 
-DATA_MASTER_PATH = Path(config.get("main", "data_path"))
+DATA_MASTER_PATH = Path(config.get("main", "data_path", fallback="unexisting_dir"))
 
 if not DATA_MASTER_PATH.exists():
     DATA_MASTER_PATH = Path(__file__).parent.parent / "xiao_et_al_demo_dataset"
