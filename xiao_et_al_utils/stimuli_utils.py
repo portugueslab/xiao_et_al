@@ -1,7 +1,5 @@
 import numpy as np
 import pandas as pd
-from bouter import EmbeddedExperiment
-
 
 def fix_fid(cid):
     return "_".join(cid.split("_")[:2])

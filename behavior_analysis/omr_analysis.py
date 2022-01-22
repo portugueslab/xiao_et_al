@@ -1,7 +1,12 @@
+"""This script calculates the analysis of swim latency and bout number for the
+optomotor response experiment. It saves summary plots in the main data directory
+(main_data_dir/figures/omr) and exports xls files with the data.
+"""
+
 import numpy as np
 import pandas as pd
 from bouter import Experiment
-from xiao_et_al_utils.behavior_analysis_utilities import get_exp_stats, get_summary_df
+from xiao_et_al_utils.behavior_utils import get_exp_stats, get_summary_df
 from xiao_et_al_utils.defaults import FIGURES_PATH, OMR_DATA_MASTER_PATH
 
 from matplotlib import pyplot as plt

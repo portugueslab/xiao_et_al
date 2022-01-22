@@ -1,9 +1,11 @@
 import pandas as pd
 import numpy as np
 from numba import njit
+from xiao_et_al_utils.defaults import VIGOR_THR, VIGOR_WIN_SEC, MIN_DURATION_S, \
+    PAD_BEFORE, PAD_AFTER, N_INIT_TRIALS_EXCLUDE
 
 
-@njit(nopython=True)
+@njit
 def extract_segments_above_thresh(
         vel, threshold=0.1, min_duration=20, pad_before=12, pad_after=25
 ):
@@ -60,11 +62,6 @@ def get_exp_stats(exp, get_spatial_period=False):
     :param get_spatial_period: if True, spatial period is read from the log and included in the df.
     :return: pandas DataFrame with trial-wise experiment statistics
     """
-    VIGOR_THR = 0.4  # Arbitrary vigor threshold for detection, in std units
-    VIGOR_WIN_SEC = 0.5  # Size of rolling window to calculate the vigor, in seconds
-    MIN_DURATION_S = 0.1  # Minimum bout duration, in seconds
-    PAD_BEFORE = 5  # Padding before bout, in pts
-    PAD_AFTER = 5  # Padding after bout, in pts
     
     tail_log_df = exp.behavior_log.set_index("t")  # DataFrame with the tail trace
     stim_log_df = exp.stimulus_log.set_index("t")  # DataFrame with the stimulus
@@ -125,16 +122,15 @@ def get_exp_stats(exp, get_spatial_period=False):
 
 def get_summary_df(trial_stats_table):
     trial_stats_table = trial_stats_table.copy()
-    N_TRIALS_EXCLUDE = 10  # Number of initial abituation trials to remove from the statistics
 
     # Calculate median of computed statistics after excluding abituating trials
-    table = trial_stats_table[N_TRIALS_EXCLUDE:].groupby("spatial_period").median()
+    table = trial_stats_table[N_INIT_TRIALS_EXCLUDE:].groupby("spatial_period").median()
 
     # Calculate fraction of trials with at least one bout
     trial_stats_table["swimmed_fract"] = (
                 trial_stats_table["bout_n"] > 0).values.astype(np.float)
     table["swimmed_fract"] = \
-    trial_stats_table[N_TRIALS_EXCLUDE:].groupby("spatial_period").mean()[
+    trial_stats_table[N_INIT_TRIALS_EXCLUDE:].groupby("spatial_period").mean()[
         "swimmed_fract"]
     return table
 

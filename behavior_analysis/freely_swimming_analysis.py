@@ -3,7 +3,6 @@ saves a excel file with the results of each subgroup, and saves for each experim
 a pdf figure with the trajectory of that fish.
 """
 
-from pathlib import Path
 import numpy as np
 import pandas as pd
 import seaborn as sns
