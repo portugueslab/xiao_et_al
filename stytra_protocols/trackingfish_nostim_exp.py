@@ -1,5 +1,3 @@
-import numpy as np
-import pandas as pd
 from lightparam import Param
 from stytra import Stytra
 from stytra.stimulation import Protocol

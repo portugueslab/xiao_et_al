@@ -17,26 +17,6 @@ class FlashingBarsProtocol(Protocol):
         bar_col = (255,) * 3
 
         th_span = 10  # angular span of the bins
-        h_mm = 7  # height of the fish in the chamber
-        square_side_mm = 30  # side of the lightsheet chamber
-        fish_surround_pad_r_mm = 1.5
-
-        # Calculate number of bins to tile the radius:
-        half_side = square_side_mm / 2
-        max_th = np.arctan(half_side / h_mm) * 180 / np.pi
-        n_bars = int(max_th / th_span)
-
-        # Start at fish_surround_pad_r mm around the fish
-        start_th = np.arctan(fish_surround_pad_r_mm / h_mm) * 180 / np.pi
-        r_arr = [
-            np.tan(np.pi * th / 180) * h_mm
-            for th in np.arange(start_th, max_th, th_span)
-        ]
-        r_arr = r_arr / (np.max(r_arr) * 2)  # normalize
-
-        # Base for circular masks:
-        s = 0.05  # resolution at which to compute circle
-        x = np.arange(-np.pi, np.pi + s, s)
 
         rad = 1 / np.sqrt(2)  # radius length
         s = np.tan((th_span / 2) * np.pi / 180) * rad  # half side of the triangle
@@ -56,7 +36,6 @@ class FlashingBarsProtocol(Protocol):
             ]
         )
 
-        # Generate circular masks
         masks = []
         # Generate triangular masks:
         for th in angles:
@@ -66,7 +45,6 @@ class FlashingBarsProtocol(Protocol):
 
         stimuli = []
         for _ in range(n_reps):
-            # Horizontal and vertical stripes:
             for mask in masks:
                 stimuli.append(
                     FullFieldVisualStimulus(
@@ -82,8 +60,6 @@ class FlashingBarsProtocol(Protocol):
             )
         stim_paused.append(FullFieldVisualStimulus(duration=pause_dur, color=bar_col))
         return stim_paused
-        # return [VisualCombinerStimulus([DynamicLuminanceStimulus(df_param=lum_df, color=(255,) * 3, clip_mask=(0, 0, side_l, side_l)),
-        #                                DynamicLuminanceStimulus(df_param=lum_df, color=(255,) * 3, clip_mask=(side_l, side_l, side_l, side_l))])]
 
 
 if __name__ == "__main__":
