@@ -11,9 +11,9 @@ from bouter import EmbeddedExperiment
 from bouter.utilities import crop, reliability
 from tqdm import tqdm
 
-from xiao_et_al_utils.stimuli_utils import stimulus_df_from_exp0070
 from xiao_et_al_utils.defaults import IMAGING_DATA_MASTER_PATH
 from xiao_et_al_utils.imaging_utils import center_on_peak, preprocess_traces
+from xiao_et_al_utils.stimuli_utils import stimulus_df_from_exp0070
 
 # Windows for stimulus cropping for reliability index,
 # padding with pre- and post- pause (in seconds):

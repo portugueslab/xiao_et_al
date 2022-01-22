@@ -1,48 +1,33 @@
 import numpy as np
 from matplotlib import collections
 from matplotlib import pyplot as plt
-from matplotlib.pyplot import Figure
 from svgpath2mpl import parse_path
 
+from xiao_et_al_utils.defaults import FIGURES_PATH
 
-def _add_lettering(f, letter, s=0.05, **kwargs):
-    letter_ax = f.add_axes((0, 1 - s, s, s))
-    letter_ax.text(0, 0, letter, ha="left", va="top", fontsize=14, **kwargs)
-    letter_ax.set(xlim=(0, 1), ylim=(-1, 0))
+"""
+# Configure matplotlib for the figures:
+plt.rcParams["axes.linewidth"] = 0.5
+plt.rcParams["axes.labelsize"] = 8
+plt.rcParams["legend.fontsize"] = 8
+plt.rcParams["axes.titlesize"] = 8
+plt.rcParams["svg.fonttype"] = "none"
+plt.rcParams["pdf.use14corefonts"] = True
 
-    letter_ax.axis("off")
-
-    return letter_ax
-
-
-class LetteredFigure(Figure):
-    def __init__(self, letter, *args, **kwargs):
-        self.letter = letter
-
-        super().__init__(*args, **kwargs)
-        self.patch.set_alpha(0.0)
-        _add_lettering(self, letter.upper())
-
-    def savefig(self, folder, **kwargs):
-        super().savefig(
-            str(folder / f"fig_{self.letter}.svg"), transparent=True, **kwargs
-        )
+for t in ["x", "y"]:
+    plt.rcParams[t + "tick.major.size"] = 3
+    plt.rcParams[t + "tick.labelsize"] = 8
+    plt.rcParams[t + "tick.major.width"] = 0.5
+"""
 
 
-def plot_config():
-    """Configure matplotlib for the figures."""
-    # plt.rcParams['figure.constrained_layout.use'] = True
-    plt.rcParams["axes.linewidth"] = 0.5
-    plt.rcParams["axes.labelsize"] = 8
-    plt.rcParams["legend.fontsize"] = 8
-    plt.rcParams["axes.titlesize"] = 8
-    plt.rcParams["svg.fonttype"] = "none"
-    plt.rcParams["pdf.use14corefonts"] = True
-
-    for t in ["x", "y"]:
-        plt.rcParams[t + "tick.major.size"] = 3
-        plt.rcParams[t + "tick.labelsize"] = 8
-        plt.rcParams[t + "tick.major.width"] = 0.5
+def save_figure(name, fig=None, subfolder="imaging", dpi=600, **kwargs):
+    if fig is None:
+        fig = plt.gcf()
+    fig.patch.set_alpha(0.0)
+    dest_dir = FIGURES_PATH / subfolder
+    dest_dir.mkdir(exist_ok=True, parents=True)
+    fig.savefig(str(dest_dir / f"{name}.svg"), transparent=True, dpi=dpi, **kwargs)
 
 
 def despine(ax, sides=["right", "top"], rmticks=True):

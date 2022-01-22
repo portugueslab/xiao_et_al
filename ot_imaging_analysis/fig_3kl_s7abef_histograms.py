@@ -1,33 +1,21 @@
-from configparser import ConfigParser
-from pathlib import Path
-
 import flammkuchen as fl
 import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 from scipy.stats import ranksums
 
-from xiao_et_al_utils.plotting_utils import LetteredFigure, despine, plot_config
+from xiao_et_al_utils.defaults import IMAGING_DATA_MASTER_PATH, REL_SCORE_THR
+from xiao_et_al_utils.plotting_utils import despine, save_figure
 
 sns.set(palette="deep", style="ticks")
 cols = sns.color_palette()
 
-plot_config()
 
-# Data path:
-config = ConfigParser()
-config.read("param_conf.ini")
+stim_thetas = np.array(fl.load(IMAGING_DATA_MASTER_PATH / "stim_pos.h5"))
+pooled_data_df = fl.load(IMAGING_DATA_MASTER_PATH / "pooled_dfs.h5", "/all_cells_df")
+exp_df = fl.load(IMAGING_DATA_MASTER_PATH / "pooled_dfs.h5", "/exp_df")
 
-master_path = Path(config.get("main", "data_path"))
-
-stim_thetas = np.array(fl.load(master_path / "stim_pos.h5"))
-pooled_data_df = fl.load(master_path / "pooled_dfs.h5", "/all_cells_df")
-exp_df = fl.load(master_path / "pooled_dfs.h5", "/exp_df")
-
-rel_score_thr = config.getfloat("main", "rel_score_thr")
-
-
-popt = fl.load(master_path / "gaussian_fit.h5", "/popt")
+popt = fl.load(IMAGING_DATA_MASTER_PATH / "gaussian_fit.h5", "/popt")
 
 fit_params = np.array(popt)
 
@@ -40,7 +28,7 @@ pooled_data_df["mean_sigma"] = np.nan
 for f in exp_df.index:
     s = pooled_data_df.loc[
         (pooled_data_df["fid"] == f)
-        & (pooled_data_df["max_rel"] > rel_score_thr)
+        & (pooled_data_df["max_rel"] > REL_SCORE_THR)
         & pooled_data_df["in_tectum"],
         "fit_sigma",
     ]
@@ -64,7 +52,7 @@ def hist_and_scatter(
     SCAT_DISP = 5  # scatter dispersion
     hist_box = (0.12, 0.25, 0.4, 0.5)
     scat_box = (0.72, 0.25, 0.28, 0.5)
-    p_val_size = 8
+    p_val_size = 12
 
     gen_groups = ["MTZ-cnt", "OPC-abl"]
 
@@ -152,7 +140,8 @@ def hist_and_scatter(
     return axs, scat_axs
 
 
-fig_d = LetteredFigure(letter="d", figsize=(3.2, 2))
+figsize = (6, 3.5)
+fig_d = plt.figure(figsize=figsize)
 axs, scat_axs = hist_and_scatter(
     fig_d,
     hist_key="max_rel",
@@ -163,9 +152,9 @@ axs, scat_axs = hist_and_scatter(
     scatter_label="responsive rois (n)",
 )
 axs.axvline(0.5, lw=0.5, c=(0.4,) * 3)
-fig_d.savefig(Path(config.get("main", "fig_path")))
+save_figure("fig_3k_s7a_hist")
 
-fig_e = LetteredFigure(letter="e", figsize=(3.2, 2))
+fig_e = plt.figure(figsize=figsize)
 axs, scat_axs = hist_and_scatter(
     fig_e,
     hist_key="max_amp",
@@ -175,9 +164,9 @@ axs, scat_axs = hist_and_scatter(
     scatter_label="average ampl. ($\Delta F/F$)",
     ylim=(0, 1.0),
 )
-fig_e.savefig(Path(config.get("main", "fig_path")))
+save_figure("fig_3l_s7b_hist")
 
-fig_g = LetteredFigure(letter="g", figsize=(3.2, 2))
+fig_g = plt.figure(figsize=figsize)
 axs, scat_axs = hist_and_scatter(
     fig_g,
     hist_key="fit_sigma",
@@ -187,4 +176,5 @@ axs, scat_axs = hist_and_scatter(
     scatter_label="average $\sigma$",
     ylim=(0, 3.5),
 )
-fig_g.savefig(Path(config.get("main", "fig_path")))
+
+save_figure("fig_s7ef_hist")

@@ -1,23 +1,19 @@
-from configparser import ConfigParser
 from pathlib import Path
 
 import flammkuchen as fl
-import matplotlib
 import numpy as np
 import seaborn as sns
 from bouter import EmbeddedExperiment
 from bouter.utilities import crop
+from matplotlib import pyplot as plt
 
 sns.set(palette="deep", style="ticks")
 cols = sns.color_palette()
 
-matplotlib.use("qt5agg")
-
-from xiao_et_al_utils.stimuli_utils import stimulus_df_from_exp0070
+from xiao_et_al_utils.defaults import IMAGING_DATA_MASTER_PATH
 from xiao_et_al_utils.imaging_utils import preprocess_traces
-from xiao_et_al_utils.plotting_utils import LetteredFigure, plot_config
-
-plot_config()
+from xiao_et_al_utils.plotting_utils import save_figure
+from xiao_et_al_utils.stimuli_utils import stimulus_df_from_exp0070
 
 PRE_INT_S = 2
 POST_INT_S = 5
@@ -32,12 +28,7 @@ xlims = (-2, 7)
 
 p_w = 0.22  # side of the central histogram
 
-# Data path:
-config = ConfigParser()
-config.read("param_conf.ini")
-
-master_path = Path(config.get("main", "data_path"))
-path = master_path / "210611_f5"
+path = IMAGING_DATA_MASTER_PATH / "210611_f5"
 
 # Load traces and experiment metadata:
 print("loading data...")
@@ -75,7 +66,7 @@ rel_scores = cells_df.loc[:, [f"rel_{i}" for i in range(len(stim_pos))]].values.
 
 print("generating figure...")
 
-fig_b = LetteredFigure(letter="b", figsize=(5.5, 3))
+fig_b = plt.figure(figsize=(5.5, 3))
 
 m_xpos, m_ypos, xside, yside = 0.1, 0.08, 0.43, 0.84
 bounds_lims = [(m_xpos + xside * 1.05 * i, m_ypos, xside, yside) for i in range(2)]
@@ -203,4 +194,6 @@ for c_n, (i_cell, (xpos, ypos, xside, yside)) in enumerate(
         colors=[(0.5,) * 3],
     )
     anatomy_ax.axis("off")
-fig_b.savefig(Path(config.get("main", "fig_path")))
+
+
+save_figure(Path(__file__).stem)

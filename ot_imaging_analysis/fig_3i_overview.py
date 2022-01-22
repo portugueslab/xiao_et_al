@@ -1,24 +1,18 @@
-from configparser import ConfigParser
 from pathlib import Path
 
 import flammkuchen as fl
 import numpy as np
 import seaborn as sns
 from bouter import EmbeddedExperiment
+from matplotlib import pyplot as plt
 
-from xiao_et_al_utils.plotting_utils import LetteredFigure, add_fish, despine, plot_config
+from xiao_et_al_utils.defaults import IMAGING_DATA_MASTER_PATH
+from xiao_et_al_utils.plotting_utils import add_fish, despine, save_figure
 
 sns.set(palette="deep", style="ticks")
 cols = sns.color_palette()
 
-plot_config()
-
-# Data path:
-config = ConfigParser()
-config.read("param_conf.ini")
-
-master_path = Path(config.get("main", "data_path"))
-path = master_path / "210611_f5"
+path = IMAGING_DATA_MASTER_PATH / "210611_f5"
 
 # Load traces and experiment metadata:
 print("loading data...")
@@ -28,7 +22,7 @@ exp = EmbeddedExperiment(path)
 
 print("generating figure...")
 
-fig_a = LetteredFigure("a", figsize=(2.5, 3))  # plt.figure()
+fig_a = plt.figure(figsize=(2.5, 3))
 
 xpos, ypos, side = 0.1, 0.7, 0.16
 axs = [fig_a.add_axes((xpos + side * 1.1 * i, ypos, side, side)) for i in range(5)]
@@ -106,6 +100,4 @@ an_ax.text(
 
 despine(an_ax, sides="all")
 
-fig_path = Path(config.get("main", "fig_path"))
-fig_path.mkdir(exist_ok=True)
-fig_a.savefig(Path(config.get("main", "fig_path")), dpi=600)
+save_figure(Path(__file__).stem)

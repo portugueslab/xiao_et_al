@@ -1,12 +1,13 @@
-from configparser import ConfigParser
 from pathlib import Path
 
 import flammkuchen as fl
 import numpy as np
 import seaborn as sns
+from matplotlib import pyplot as plt
 from scipy.optimize import curve_fit
 
-from xiao_et_al_utils.plotting_utils import LetteredFigure, despine, plot_config
+from xiao_et_al_utils.defaults import IMAGING_DATA_MASTER_PATH, REL_SCORE_THR
+from xiao_et_al_utils.plotting_utils import despine, save_figure
 
 
 def gaussian(x, a, x0, sigma):
@@ -20,17 +21,8 @@ def _conv_to_dist(val):
 sns.set(palette="deep", style="ticks")
 cols = sns.color_palette()
 
-plot_config()
-
-# Data path:
-config = ConfigParser()
-config.read("param_conf.ini")
-
-master_path = Path(config.get("main", "data_path"))
-
-pooled_data_df = fl.load(master_path / "pooled_dfs.h5", "/all_cells_df")
-rel_score_thr = config.getfloat("main", "rel_score_thr")
-stim_thetas = np.array(fl.load(master_path / "stim_pos.h5"))
+pooled_data_df = fl.load(IMAGING_DATA_MASTER_PATH / "pooled_dfs.h5", "/all_cells_df")
+stim_thetas = np.array(fl.load(IMAGING_DATA_MASTER_PATH / "stim_pos.h5"))
 n_pos = len(stim_thetas)
 
 
@@ -51,13 +43,13 @@ popt_singleneuron, pcov = curve_fit(
 x_range = _conv_to_dist(np.arange(n_pos))
 
 m_xpos, m_ypos, xside, yside = 0.3, 0.25, 0.6, 0.3
-fig_f = LetteredFigure(letter="f", figsize=(2, 2))
+fig_f = plt.figure(figsize=(2, 2))
 axs = [
     fig_f.add_axes((m_xpos, m_ypos + +1.2 * i * yside, xside, yside)) for i in range(2)
 ]
 
 data = pooled_data_df.loc[
-    (pooled_data_df["max_rel"] > rel_score_thr) & pooled_data_df["in_tectum"],
+    (pooled_data_df["max_rel"] > REL_SCORE_THR) & pooled_data_df["in_tectum"],
     [f"rel_reord_{i}" for i in range(36)],
 ].values.T
 data = data / data[18, :]
@@ -96,4 +88,4 @@ axs[1].set(xticklabels=[], ylabel="reliability")
 despine(axs[0])
 despine(axs[1])
 
-fig_f.savefig(Path(config.get("main", "fig_path")), dpi=600)
+save_figure(Path(__file__).stem)

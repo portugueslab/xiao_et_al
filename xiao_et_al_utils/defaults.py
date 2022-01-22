@@ -34,3 +34,8 @@ PAD_AFTER = 5  # Padding after bout, in pts (approx 12 ms)
 
 N_INIT_TRIALS_EXCLUDE = 10  # Number of initial abituation trials of the protocol
 # to remove from the statistics
+
+#######################################
+# Input parameters for imaging analysis
+REL_SCORE_THR = 0.5  # reliability  threshold for the above_rel_thr entry in cells df
+N_STIMS = 36  # number of distinct stimulus positions used in the imaging

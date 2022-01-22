@@ -1,24 +1,15 @@
-from configparser import ConfigParser
 from pathlib import Path
 
 import flammkuchen as fl
-import matplotlib
+import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 
-from xiao_et_al_utils.plotting_utils import LetteredFigure, add_fish, despine, plot_config
+from xiao_et_al_utils.defaults import IMAGING_DATA_MASTER_PATH, REL_SCORE_THR
+from xiao_et_al_utils.plotting_utils import add_fish, despine, save_figure
 
 sns.set(palette="deep", style="ticks")
 cols = sns.color_palette()
-
-matplotlib.use("qt5agg")
-
-
-plot_config()
-
-# Data path:
-config = ConfigParser()
-config.read("param_conf.ini")
 
 
 def _shift_90_deg(array):
@@ -27,21 +18,19 @@ def _shift_90_deg(array):
     return out
 
 
-master_path = Path(config.get("main", "data_path"))
-
-stim_thetas = np.array(fl.load(master_path / "stim_pos.h5"))
-pooled_data = fl.load(master_path / "pooled_dfs.h5", "/all_cells_df")
+stim_thetas = np.array(fl.load(IMAGING_DATA_MASTER_PATH / "stim_pos.h5"))
+pooled_data = fl.load(IMAGING_DATA_MASTER_PATH / "pooled_dfs.h5", "/all_cells_df")
 all_responses = pooled_data.loc[
     :, [f"rel_{i}" for i in range(len(stim_thetas))]
 ].values.T
 all_coords = pooled_data.loc[:, ["z_trasf", "x_trasf", "y_trasf"]].values
 all_in_tectum = pooled_data["in_tectum"].values
 
-responsive = all_responses.max(0) > config.getfloat("main", "rel_score_thr")
+responsive = all_responses.max(0) > REL_SCORE_THR
 all_peaks = np.argmax(all_responses, 0)
 
 
-fig_c = LetteredFigure(letter="c", figsize=(4.5, 2))
+fig_c = plt.figure(figsize=(4.5, 2))
 m_xpos, m_ypos, xside, yside = 0.05, 0.1, 0.7, 0.7
 anat_scatt_size = 1
 
@@ -117,4 +106,4 @@ axs.axis("equal")
 axs.axis("off")
 add_fish(axs, offset=[0.45, 0.0], scale=1.7)
 
-fig_c.savefig(Path(config.get("main", "fig_path")), dpi=600)
+save_figure(Path(__file__).stem)

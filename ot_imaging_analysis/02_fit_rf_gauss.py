@@ -1,17 +1,13 @@
-from configparser import ConfigParser
-from pathlib import Path
+"""This script perform a gaussian fit on the reliability curve over stimulus angle for
+all cells across all fish.
+"""
 
 import flammkuchen as fl
 import numpy as np
 from scipy.optimize import curve_fit
 from tqdm import tqdm
 
-config = ConfigParser()
-config.read("param_conf.ini")
-
-MASTER_PATH = Path(config.get("main", "data_path"))
-REL_SCORE_THR = config.getfloat("main", "rel_score_thr")
-N_STIMS = 36
+from xiao_et_al_utils.defaults import IMAGING_DATA_MASTER_PATH, N_STIMS
 
 
 def _gaussian(x, a, x0, sigma):
@@ -19,7 +15,7 @@ def _gaussian(x, a, x0, sigma):
 
 
 # Get matrix with centered responses for all cells:
-all_cells_df = fl.load(MASTER_PATH / "pooled_dfs.h5", "/all_cells_df")
+all_cells_df = fl.load(IMAGING_DATA_MASTER_PATH / "pooled_dfs.h5", "/all_cells_df")
 full_data_mat = all_cells_df.loc[:, [f"rel_reord_{i}" for i in range(N_STIMS)]].values
 n_cells = full_data_mat.shape[0]
 
@@ -39,4 +35,4 @@ for i in tqdm(range(n_cells)):
     except RuntimeError:
         pass
 
-fl.save(MASTER_PATH / "gaussian_fit.h5", dict(popt=popt, pcov=pcov))
+fl.save(IMAGING_DATA_MASTER_PATH / "gaussian_fit.h5", dict(popt=popt, pcov=pcov))
