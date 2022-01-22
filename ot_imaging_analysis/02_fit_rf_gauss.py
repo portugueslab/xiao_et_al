@@ -1,21 +1,21 @@
-import numpy as np
-import flammkuchen as fl
-from tqdm import tqdm
-from pathlib import Path
 from configparser import ConfigParser
+from pathlib import Path
 
+import flammkuchen as fl
+import numpy as np
 from scipy.optimize import curve_fit
+from tqdm import tqdm
 
 config = ConfigParser()
-config.read('param_conf.ini')
+config.read("param_conf.ini")
 
 MASTER_PATH = Path(config.get("main", "data_path"))
-REL_SCORE_THR = config.getfloat('main', 'rel_score_thr')
+REL_SCORE_THR = config.getfloat("main", "rel_score_thr")
 N_STIMS = 36
 
 
 def _gaussian(x, a, x0, sigma):
-    return a * np.exp(-(x - x0)**2 / (2 * sigma**2))
+    return a * np.exp(-((x - x0) ** 2) / (2 * sigma ** 2))
 
 
 # Get matrix with centered responses for all cells:
@@ -39,5 +39,4 @@ for i in tqdm(range(n_cells)):
     except RuntimeError:
         pass
 
-fl.save(MASTER_PATH / "gaussian_fit.h5", dict(popt=popt,
-                                              pcov=pcov))
+fl.save(MASTER_PATH / "gaussian_fit.h5", dict(popt=popt, pcov=pcov))

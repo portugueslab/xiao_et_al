@@ -1,12 +1,12 @@
+from pathlib import Path
+from random import shuffle
+
 import numpy as np
 import pandas as pd
-from pathlib import Path
-
+from lightparam import Param
 from stytra import Stytra
 from stytra.stimulation import Protocol
-from stytra.stimulation.stimuli import Basic_CL_1D, GratingStimulus, GainChangerStimulus
-from lightparam import Param
-from random import shuffle
+from stytra.stimulation.stimuli import Basic_CL_1D, GainChangerStimulus, GratingStimulus
 
 
 class ClosedLoop1DProt(Protocol):
@@ -14,13 +14,13 @@ class ClosedLoop1DProt(Protocol):
 
     stytra_config = dict(
         tracking=dict(embedded=True, method="tail", estimator="vigor"),
-
-        log_format="hdf5")
+        log_format="hdf5",
+    )
 
     def __init__(self):
         super().__init__()
 
-        self.gain = Param(-28., limits=(-100, 0))
+        self.gain = Param(-28.0, limits=(-100, 0))
         self.grating_vel = Param(10.0, unit="mm/s")
         self.inter_stim_pause = Param(10.0, unit="s", editable=False, loadable=False)
         self.grating_duration = Param(10.0, unit="s", editable=False, loadable=False)
@@ -28,14 +28,16 @@ class ClosedLoop1DProt(Protocol):
         # Parameter controlling number of repetitions:
         self.trials_n = Param(10, editable=False, loadable=False)
         self.abituation_trials_n = Param(10, editable=False, loadable=False)
-        self.baseline_grating_freq = Param(0.1, unit="°/mm",
-                                            editable=False, loadable=False)
+        self.baseline_grating_freq = Param(
+            0.1, unit="°/mm", editable=False, loadable=False
+        )
         # List of probed spatial frequencies:
-        self.grating_freq_list = Param([0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1],
-                                       unit="°/mm",
-                                       editable=False, loadable=False)
-
-
+        self.grating_freq_list = Param(
+            [0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1],
+            unit="°/mm",
+            editable=False,
+            loadable=False,
+        )
 
     def get_stim_sequence(self):
         stimuli = [GainChangerStimulus(newgain=self.gain)]
@@ -81,5 +83,3 @@ class ClosedLoop1DProt(Protocol):
 
 if __name__ == "__main__":
     s = Stytra(protocol=ClosedLoop1DProt())
-
-

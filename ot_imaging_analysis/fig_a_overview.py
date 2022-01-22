@@ -1,13 +1,12 @@
 from configparser import ConfigParser
 from pathlib import Path
-from matplotlib import pyplot as plt
-import matplotlib
-from bouter import EmbeddedExperiment
+
 import flammkuchen as fl
 import numpy as np
 import seaborn as sns
+from bouter import EmbeddedExperiment
 
-from xiao_et_al_utils.plotting import plot_config, add_fish, despine, LetteredFigure
+from xiao_et_al_utils.plotting_utils import LetteredFigure, add_fish, despine, plot_config
 
 sns.set(palette="deep", style="ticks")
 cols = sns.color_palette()
@@ -16,9 +15,9 @@ plot_config()
 
 # Data path:
 config = ConfigParser()
-config.read('param_conf.ini')
+config.read("param_conf.ini")
 
-master_path = Path(config.get('main', 'data_path'))
+master_path = Path(config.get("main", "data_path"))
 path = master_path / "210611_f5"
 
 # Load traces and experiment metadata:
@@ -44,7 +43,7 @@ for ax, title, stim_n in zip(axs, titles, stimuli):
         mask = clip_masks[stim_n]
         ax.fill([m[0] for m in mask], [m[1] for m in mask], fc="k", lw=0, alpha=0.6)
     ax.set(ylim=(0.1, 0.9), xlim=(0.1, 0.9), xticks=[], yticks=[], title=title)
-    ax.set_aspect('equal', adjustable='box')
+    ax.set_aspect("equal", adjustable="box")
 
     add_fish(ax, offset=[0.45, 0.08], scale=(30 / 15))
 
@@ -54,27 +53,59 @@ planes = [2, 6]
 pad = 10
 
 an_ax = fig_a.add_axes((0, 0.1, 1, 0.5))
-an_ax.imshow(np.concatenate([anatomy[i, pad:-pad, pad:-pad] for i in planes]).T,
-             cmap="gray_r", origin="lower", vmax=100, vmin=0)
-an_ax.contour(np.concatenate([ot_mask[i, pad:-pad, pad:-pad] for i in planes],
-                             axis=1),
-              origin="lower",
-              levels=[1], linewidths=0.5, colors=[cols[3]])
+an_ax.imshow(
+    np.concatenate([anatomy[i, pad:-pad, pad:-pad] for i in planes]).T,
+    cmap="gray_r",
+    origin="lower",
+    vmax=100,
+    vmin=0,
+)
+an_ax.contour(
+    np.concatenate([ot_mask[i, pad:-pad, pad:-pad] for i in planes], axis=1),
+    origin="lower",
+    levels=[1],
+    linewidths=0.5,
+    colors=[cols[3]],
+)
 
 b_len = 100
 bar_pos_x = anatomy.shape[1]
 for ax, labels, bar_pos_y in zip(axs, [["caud-rost", "l-r"], ["vent-dors"]], [400]):
-    an_ax.plot([bar_pos_x, bar_pos_x, bar_pos_x + b_len],
-               [bar_pos_y - b_len, bar_pos_y, bar_pos_y], lw=0.5, c=(0.3,) * 3)
-    an_ax.text(bar_pos_x, bar_pos_y - b_len / 2, labels[0], ha="right", va="center",
-               rotation='vertical', fontsize=8)
-    an_ax.text(bar_pos_x + b_len / 2, bar_pos_y + 10, labels[1], ha="center",
-               va="bottom", fontsize=8)
-an_ax.text(anatomy.shape[1] * 2 - pad * 5, anatomy.shape[1] - pad * 7,
-           "Huc:H2B-GCaMP6s", fontsize=7, ha="right", va="top", c=(0.5,) * 3)
+    an_ax.plot(
+        [bar_pos_x, bar_pos_x, bar_pos_x + b_len],
+        [bar_pos_y - b_len, bar_pos_y, bar_pos_y],
+        lw=0.5,
+        c=(0.3,) * 3,
+    )
+    an_ax.text(
+        bar_pos_x,
+        bar_pos_y - b_len / 2,
+        labels[0],
+        ha="right",
+        va="center",
+        rotation="vertical",
+        fontsize=8,
+    )
+    an_ax.text(
+        bar_pos_x + b_len / 2,
+        bar_pos_y + 10,
+        labels[1],
+        ha="center",
+        va="bottom",
+        fontsize=8,
+    )
+an_ax.text(
+    anatomy.shape[1] * 2 - pad * 5,
+    anatomy.shape[1] - pad * 7,
+    "Huc:H2B-GCaMP6s",
+    fontsize=7,
+    ha="right",
+    va="top",
+    c=(0.5,) * 3,
+)
 
 despine(an_ax, sides="all")
 
-fig_path = Path(config.get('main', 'fig_path'))
+fig_path = Path(config.get("main", "fig_path"))
 fig_path.mkdir(exist_ok=True)
-fig_a.savefig(Path(config.get('main', 'fig_path')), dpi=600)
+fig_a.savefig(Path(config.get("main", "fig_path")), dpi=600)

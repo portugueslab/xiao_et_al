@@ -22,8 +22,7 @@ def roll_matrix(input_mat, indexes):
 
 
 def center_on_peak(input_mat):
-    """Recenter along the 1st dimension.
-    """
-    idxs = - np.argmax(input_mat, 0) - input_mat.shape[0] // 2
+    """Recenter along the 1st dimension."""
+    idxs = -np.argmax(input_mat, 0) - input_mat.shape[0] // 2
 
     return roll_matrix(input_mat, idxs)

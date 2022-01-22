@@ -4,16 +4,16 @@ It saves the results in dataframes that also contain positions of the ROIs befor
 after manual registration, etc.
 """
 
-import numpy as np
-from bouter import EmbeddedExperiment
-import pandas as pd
-from tqdm import tqdm
 import flammkuchen as fl
-from xiao_et_al_utils.defaults import IMAGING_DATA_MASTER_PATH
-
+import numpy as np
+import pandas as pd
+from bouter import EmbeddedExperiment
 from bouter.utilities import crop, reliability
-from xiao_et_al_utils.behavior_and_stimuli import stimulus_df_from_exp0070
-from xiao_et_al_utils.imaging import center_on_peak, preprocess_traces
+from tqdm import tqdm
+
+from xiao_et_al_utils.stimuli_utils import stimulus_df_from_exp0070
+from xiao_et_al_utils.defaults import IMAGING_DATA_MASTER_PATH
+from xiao_et_al_utils.imaging_utils import center_on_peak, preprocess_traces
 
 # Windows for stimulus cropping for reliability index,
 # padding with pre- and post- pause (in seconds):
@@ -33,11 +33,12 @@ PX_SIZE = 0.6
 all_offsets = fl.load(IMAGING_DATA_MASTER_PATH / "manual_alignment_offsets.h5")
 
 # Abbreviation of genotype from logging:
-GEN_ABBR_DICT = {"Huc:H2B-GCaMP6s;olig1:Ntr": "OPC-abl",
-                 "Huc:H2B-GCaMP6s": "MTZ-cnt"}
+GEN_ABBR_DICT = {"Huc:H2B-GCaMP6s;olig1:Ntr": "OPC-abl", "Huc:H2B-GCaMP6s": "MTZ-cnt"}
 
 # find all data-containing folders:
-path_list = [f.parent for f in IMAGING_DATA_MASTER_PATH.glob("*/data_from_suite2p_unfiltered.h5")]
+path_list = [
+    f.parent for f in IMAGING_DATA_MASTER_PATH.glob("*/data_from_suite2p_unfiltered.h5")
+]
 for path in tqdm(path_list):
     # Load experiment metadata using bouter class to read Stytra data:
     exp = EmbeddedExperiment(path)
@@ -60,9 +61,13 @@ for path in tqdm(path_list):
     n_stims = len(unique_stim_pos)
 
     # Crop around stimuli:
-    cropped = crop(traces, stim_df["t"] * fs,
-                   pre_int=int(PRE_INT_S * fs), post_int=int(POST_INT_S * fs))
-    cropped = cropped - cropped[:int(PRE_INT_S * fs), :, :].mean(0)
+    cropped = crop(
+        traces,
+        stim_df["t"] * fs,
+        pre_int=int(PRE_INT_S * fs),
+        post_int=int(POST_INT_S * fs),
+    )
+    cropped = cropped - cropped[: int(PRE_INT_S * fs), :, :].mean(0)
 
     # Loop over positions and compute reliability scores:
     rel_scores = np.zeros((n_stims, n_cells))
@@ -75,12 +80,19 @@ for path in tqdm(path_list):
         rel_scores[i] = reliability(cropped[:, resps_idxs, :])
 
         # Amplitude calculation:
-        bl_slice = slice(int((PRE_INT_S + BL_START_S)*fs),
-                               int((PRE_INT_S + BL_END_S)*fs))
-        rsp_slice = slice(int((PRE_INT_S + RSP_START_S) * fs),
-                               int((PRE_INT_S + RSP_END_S) * fs))
-        amp_scores[i] = np.nanmean((cropped[rsp_slice, resps_idxs, :].mean(0) -
-                          cropped[bl_slice, resps_idxs, :].mean(0)), 0)
+        bl_slice = slice(
+            int((PRE_INT_S + BL_START_S) * fs), int((PRE_INT_S + BL_END_S) * fs)
+        )
+        rsp_slice = slice(
+            int((PRE_INT_S + RSP_START_S) * fs), int((PRE_INT_S + RSP_END_S) * fs)
+        )
+        amp_scores[i] = np.nanmean(
+            (
+                cropped[rsp_slice, resps_idxs, :].mean(0)
+                - cropped[bl_slice, resps_idxs, :].mean(0)
+            ),
+            0,
+        )
 
     # Compute reliability score centered on the position of max response:
     reord_rel = center_on_peak(rel_scores)
@@ -93,16 +105,19 @@ for path in tqdm(path_list):
 
     # Calculate z step size for the individual fish from Sashimi metadata:
     z_range = scanning_meta["z"]["piezo_max"] - scanning_meta["z"]["piezo_min"]
-    n_planes = scanning_meta["triggering"]["n_planes"] - \
-        scanning_meta["triggering"]["n_skip_start"]
+    n_planes = (
+        scanning_meta["triggering"]["n_planes"]
+        - scanning_meta["triggering"]["n_skip_start"]
+    )
     z_res = z_range / n_planes
 
     # Generate pandas DataFrame with scores and centered scores for each cell:
     df = pd.DataFrame(
         np.concatenate([rel_scores, amp_scores, reord_rel], 0).T,
-        columns=[f"rel_{i}" for i in range(n_stims)] +
-                [f"amp_{i}" for i in range(n_stims)] +
-                [f"rel_reord_{i}" for i in range(n_stims)])
+        columns=[f"rel_{i}" for i in range(n_stims)]
+        + [f"amp_{i}" for i in range(n_stims)]
+        + [f"rel_reord_{i}" for i in range(n_stims)],
+    )
 
     df["cid"] = [f"{fid}_{i:05.0f}" for i in range(n_cells)]  # cell ID
     df["gen"] = gen  # genotype

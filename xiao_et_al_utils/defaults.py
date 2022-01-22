@@ -2,11 +2,11 @@ from configparser import ConfigParser
 from pathlib import Path
 
 config = ConfigParser()
-config.read(Path(__file__).parent.parent / 'param_conf.ini')
+config.read(Path(__file__).parent.parent / "param_conf.ini")
 
 ############################
 # Data and figures locations
-DATA_MASTER_PATH = Path(config.get('main', 'data_path'))
+DATA_MASTER_PATH = Path(config.get("main", "data_path"))
 
 IMAGING_DATA_MASTER_PATH = DATA_MASTER_PATH / "receptive_field_imaging"
 FREELY_SWIM_DATA_MASTER_PATH = DATA_MASTER_PATH / "freely_swimming"

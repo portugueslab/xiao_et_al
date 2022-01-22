@@ -5,12 +5,12 @@ optomotor response experiment. It saves summary plots in the main data directory
 
 import numpy as np
 import pandas as pd
+import seaborn as sns
 from bouter import Experiment
+from matplotlib import pyplot as plt
+
 from xiao_et_al_utils.behavior_utils import get_exp_stats, get_summary_df
 from xiao_et_al_utils.defaults import FIGURES_PATH, OMR_DATA_MASTER_PATH
-
-from matplotlib import pyplot as plt
-import seaborn as sns
 
 sns.set(style="ticks", palette="deep")
 cols = sns.color_palette()
@@ -19,7 +19,7 @@ for group in ["ntr", "cnt"]:
     print("Analysing ", group)
 
     master_path = OMR_DATA_MASTER_PATH / group
-    paths = list(master_path.glob('*_f[0-9]'))
+    paths = list(master_path.glob("*_f[0-9]"))
     exps = [Experiment(path) for path in paths]
     genotypes = [e["general"]["animal"]["comments"] for e in exps]  # animal genotypes
 
@@ -33,7 +33,8 @@ for group in ["ntr", "cnt"]:
     for param in ["bout_n", "first_bout_latency", "swimmed_fract"]:
         summary = pd.concat(
             [aggr[param].rename(path.name) for aggr, path in zip(aggregate, paths)],
-            axis=1)
+            axis=1,
+        )
         summary.to_excel(str(master_path / "{}_{}_summary.xlsx".format(param, group)))
 
     ###############
@@ -44,7 +45,8 @@ for group in ["ntr", "cnt"]:
     for param in ["bout_n", "first_bout_latency", "swimmed_fract"]:
         summary = pd.concat(
             [aggr[param].rename(path.name) for aggr, path in zip(aggregate, paths)],
-            axis=1)
+            axis=1,
+        )
         f = plt.figure(figsize=(4, 3))
         plt.plot(summary, linewidth=0.5)
 
@@ -52,8 +54,13 @@ for group in ["ntr", "cnt"]:
         median = np.percentile(summary.values, 50, axis=1)
         quart2 = np.percentile(summary.values, 75, axis=1)
 
-        plt.errorbar(summary.index, median, [median - quart1, quart2 - median],
-                     linewidth=2, color="k")
+        plt.errorbar(
+            summary.index,
+            median,
+            [median - quart1, quart2 - median],
+            linewidth=2,
+            color="k",
+        )
         plt.ylabel(param)
         plt.xlabel("Spatial period (mm)")
         sns.despine()

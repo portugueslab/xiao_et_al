@@ -1,11 +1,9 @@
-from stytra_config import ConfiguredStytra
-from stytra import Protocol
-from stytra.stimulation.stimuli import (
-    FullFieldVisualStimulus,
-)
-import numpy as np
-
 from random import shuffle
+
+import numpy as np
+from stytra import Protocol
+from stytra.stimulation.stimuli import FullFieldVisualStimulus
+from stytra_config import ConfiguredStytra
 
 
 class FlashingBarsProtocol(Protocol):
@@ -30,8 +28,10 @@ class FlashingBarsProtocol(Protocol):
 
         # Start at fish_surround_pad_r mm around the fish
         start_th = np.arctan(fish_surround_pad_r_mm / h_mm) * 180 / np.pi
-        r_arr = [np.tan(np.pi * th / 180) * h_mm for th in
-                 np.arange(start_th, max_th, th_span)]
+        r_arr = [
+            np.tan(np.pi * th / 180) * h_mm
+            for th in np.arange(start_th, max_th, th_span)
+        ]
         r_arr = r_arr / (np.max(r_arr) * 2)  # normalize
 
         # Base for circular masks:
@@ -42,15 +42,19 @@ class FlashingBarsProtocol(Protocol):
         s = np.tan((th_span / 2) * np.pi / 180) * rad  # half side of the triangle
         n_triangles = 360 / th_span  # number of triangular masks
 
-        angles = np.arange(
-            n_triangles) * th_span * np.pi / 180  # angle of triangular masks
+        angles = (
+            np.arange(n_triangles) * th_span * np.pi / 180
+        )  # angle of triangular masks
 
         # template triangular mask to rotate:
-        polyg_points = np.array([(0, 0),
-                                 (s, rad),
-                                 (-s, rad),
-                                 (0, 0),
-                                 ])
+        polyg_points = np.array(
+            [
+                (0, 0),
+                (s, rad),
+                (-s, rad),
+                (0, 0),
+            ]
+        )
 
         # Generate circular masks
         masks = []
@@ -64,17 +68,19 @@ class FlashingBarsProtocol(Protocol):
         for _ in range(n_reps):
             # Horizontal and vertical stripes:
             for mask in masks:
-                    stimuli.append(
-                        FullFieldVisualStimulus(duration=flash_dur, color=bg_col,
-                                                clip_mask=list(mask)))
+                stimuli.append(
+                    FullFieldVisualStimulus(
+                        duration=flash_dur, color=bg_col, clip_mask=list(mask)
+                    )
+                )
         shuffle(stimuli)
 
         stim_paused = []
         for stim in stimuli:
-            stim_paused.extend([FullFieldVisualStimulus(duration=pause_dur,
-                                                        color=bar_col), stim])
-        stim_paused.append(FullFieldVisualStimulus(duration=pause_dur,
-                                                   color=bar_col))
+            stim_paused.extend(
+                [FullFieldVisualStimulus(duration=pause_dur, color=bar_col), stim]
+            )
+        stim_paused.append(FullFieldVisualStimulus(duration=pause_dur, color=bar_col))
         return stim_paused
         # return [VisualCombinerStimulus([DynamicLuminanceStimulus(df_param=lum_df, color=(255,) * 3, clip_mask=(0, 0, side_l, side_l)),
         #                                DynamicLuminanceStimulus(df_param=lum_df, color=(255,) * 3, clip_mask=(side_l, side_l, side_l, side_l))])]

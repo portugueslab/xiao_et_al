@@ -6,11 +6,16 @@ a pdf figure with the trajectory of that fish.
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from matplotlib import pyplot as plt
 from bouter import Experiment
+from matplotlib import pyplot as plt
 from tqdm import tqdm
 
-from xiao_et_al_utils.defaults import FREELY_SWIM_DATA_MASTER_PATH, SMOOTH_WND_S, ARENA_SIZE_MM, ARENA_SIZE_PIXELS
+from xiao_et_al_utils.defaults import (
+    ARENA_SIZE_MM,
+    ARENA_SIZE_PIXELS,
+    FREELY_SWIM_DATA_MASTER_PATH,
+    SMOOTH_WND_S,
+)
 
 sns.set(style="ticks", palette="deep")
 
@@ -42,7 +47,6 @@ for master_path in FREELY_SWIM_DATA_MASTER_PATH.glob("*"):
 
         # Get distance integrating speed, accounting for calibration:
         distances_travelled.append(np.sum(speed) * mm_pixel)
-
 
         # plot the trajectory:
         f, ax = plt.subplots(figsize=(5, 5))
