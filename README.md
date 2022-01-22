@@ -1,13 +1,24 @@
 # Xiao et al - stimuli and behavior analysis code
-Stytra stimuli and analysis notebooks for the publication _Oligodendrocyte Precursor Cells Sculpt the Visual System by Regulating Axonal Remodeling_, Xiao et al, 2022. The code has ben run using `python==3.7`
+Stytra stimuli and analysis scripts of Python-based analyses for the publication _Oligodendrocyte Precursor Cells Sculpt the Visual System by Regulating Axonal Remodeling_, Xiao et al, 2022. The code has ben run using `python==3.8`.
+This repo is designed to make the full Python-based analysis presented in the paper fully reproducible from the data, which are shared in: TODO link
+
+## Description of the repo
+The repo contains the following module:
+ - `xiao_et_al_utils` a pip-installable module with the utility functions required by the scripts and the definition of the analysis parameters, together with the folders with the Stytra
+
+And the following script folders:
+ - `stytra_protocols`: Stytra scripts used for running the freely swimming, omr and imaging experiments
+ - `behavior_analysis`: scripts for running the analysis of the freely swimming experiments and the OMR experiments.
+ - `ot_imaging_analysis`: scripts for running the analysis of the imaging experiments.
+
 
 ## Stytra stimulation protocols
 The following experiment scripts were used to run experiments with `stytra==0.8.26`:
  - `trackingfish_nostim_exp.py`: script for running the no stimulation, freely swimming larvae experiments reported in Fig.3 and Fig.S3.
- - `trackingfish_nostim_exp.py`: script for running the curve of contrast for the OMR response in embedded fish reported in Fig.3 and Fig.S3.
+ - `OMR_visual_acuity_random_grating_distance.py`: script for running the curve of contrast for the OMR response in embedded fish reported in Fig.3 and Fig.S3.
  
  ## Behavior data analysis:
- - `Freely swimming analysis.ipynb`: Jupyter Notebook for analyzing the no stimulation, freely swimming larvae experiments reported in Fig.3 and Fig.S3.
+ - `freely_swimming_analysis.py`: script for analyzing the no stimulation, freely swimming larvae experiments reported in Fig.3 and Fig.S3.
  - `OMR - visual acuity random gratings.ipynb`: Jupyter Notebook for analyzing the curve of contrast for the OMR response in embedded fish reported in Fig.3 and Fig.S3.
  
  ## Lightsheet imaging data analysis:
