@@ -100,8 +100,8 @@ for path in tqdm(path_list):
     # Load coords for ROIs and optic tectum mask:
     coords = fl.load(path / "data_from_suite2p_unfiltered.h5", "/coords")
     mask = fl.load(path / "anatomy.mask", "/mask")
-    int_c = np.round(coords).astype(np.int)  # convert float coords to integers
-    in_tectum = np.array([mask[c[0], c[2], c[1]] for c in int_c]).astype(np.bool)
+    int_c = np.round(coords).astype(int)  # convert float coords to integers
+    in_tectum = np.array([mask[c[0], c[2], c[1]] for c in int_c]).astype(bool)
 
     # Calculate z step size for the individual fish from Sashimi metadata:
     z_range = scanning_meta["z"]["piezo_max"] - scanning_meta["z"]["piezo_min"]
