@@ -74,7 +74,7 @@ bounds_lims = [(m_xpos + xside * 1.05 * i, m_ypos, xside, yside) for i in range(
 x_time = np.arange(0, cropped.shape[0]) / fs - PRE_INT_S  # time array
 
 # In small test data, take just the first two cells:
-cell_indexes = (0, 1)if DEMO_MODE else (30, 10818)
+cell_indexes = (0, 1) if DEMO_MODE else (30, 10818)
 
 for c_n, (i_cell, (xpos, ypos, xside, yside)) in enumerate(
     zip(cell_indexes, bounds_lims)

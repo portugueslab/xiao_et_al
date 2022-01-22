@@ -145,6 +145,9 @@ notebooks_julia/Manifest.toml
 
 #outputs of analyses
 .xiao_et_al_demo_dataset/
+
+/xiao_et_al_utils/xiao_et_al_demo_dataset/OMR/cnt/*xlsx
+
 *pdf
 *svg
 *csv
