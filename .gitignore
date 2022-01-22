@@ -143,4 +143,14 @@ notebooks_julia/Manifest.toml
 
 .idea/
 
-*.h5
+#outputs of analyses
+*.pdf
+*.svg
+*.csv
+*.xls
+*stim_pos.h5
+*cell_df.h5
+*pooled_dfs.h5
+*gaussian_fit.h5
+
+
