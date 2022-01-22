@@ -7,7 +7,7 @@ from bouter import EmbeddedExperiment
 from bouter.utilities import crop
 from matplotlib import pyplot as plt
 
-from xiao_et_al_utils.defaults import IMAGING_DATA_MASTER_PATH
+from xiao_et_al_utils.defaults import IMAGING_DATA_MASTER_PATH, DEMO_MODE
 from xiao_et_al_utils.imaging_utils import preprocess_traces
 from xiao_et_al_utils.plotting_utils import save_figure
 from xiao_et_al_utils.stimuli_utils import stimulus_df_from_exp0070
@@ -73,10 +73,12 @@ bounds_lims = [(m_xpos + xside * 1.05 * i, m_ypos, xside, yside) for i in range(
 
 x_time = np.arange(0, cropped.shape[0]) / fs - PRE_INT_S  # time array
 
+# In small test data, take just the first two cells:
+cell_indexes = (0, 1)if DEMO_MODE else (30, 10818)
+
 for c_n, (i_cell, (xpos, ypos, xside, yside)) in enumerate(
-    zip([30, 10818], bounds_lims)
+    zip(cell_indexes, bounds_lims)
 ):
-    # In random subsampled test data, those indexes are not included in the range:
     if i_cell > coords.shape[0] - 1:
         i_cell = coords.shape[0] - 1
 

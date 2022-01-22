@@ -16,7 +16,7 @@ setup(
     install_requires=requirements,
     long_description=long_description,
     long_description_content_type="text/markdown",
-    python_requires="==3.8",
+    python_requires="==3.8.10",
     packages=find_namespace_packages(exclude=("docs", "tests*")),
     extras_require=dict(dev=requirements_dev),
     include_package_data=True,

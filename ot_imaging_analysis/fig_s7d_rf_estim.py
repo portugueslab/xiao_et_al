@@ -6,7 +6,7 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 from scipy.optimize import curve_fit
 
-from xiao_et_al_utils.defaults import IMAGING_DATA_MASTER_PATH, REL_SCORE_THR
+from xiao_et_al_utils.defaults import IMAGING_DATA_MASTER_PATH, REL_SCORE_THR, DEMO_MODE
 from xiao_et_al_utils.plotting_utils import despine, save_figure
 
 
@@ -28,8 +28,11 @@ n_pos = len(stim_thetas)
 
 # Get nice example to plot
 x = np.arange(n_pos)
+
+# Low number if we are just running demo mode with a few cells:
+example_thr = 0.5 if DEMO_MODE else 0.9
 y_single_neuron = pooled_data_df.loc[
-    (pooled_data_df["gen"] == "MTZ-cnt") & (pooled_data_df["max_rel"] > 0.9),
+    (pooled_data_df["gen"] == "MTZ-cnt") & (pooled_data_df["max_rel"] > example_thr),
     [f"rel_reord_{i}" for i in range(n_pos)],
 ].values[0, :]
 

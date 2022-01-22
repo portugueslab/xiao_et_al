@@ -10,6 +10,7 @@ DATA_MASTER_PATH = Path(config.get("main", "data_path"))
 
 if not DATA_MASTER_PATH.exists():
     DATA_MASTER_PATH = Path(__file__).parent.parent / "xiao_et_al_demo_dataset"
+    DEMO_MODE = True
 
 IMAGING_DATA_MASTER_PATH = DATA_MASTER_PATH / "receptive_field_imaging"
 FREELY_SWIM_DATA_MASTER_PATH = DATA_MASTER_PATH / "freely_swimming"
