@@ -22,7 +22,9 @@ The following experiment scripts were used to run experiments with `stytra==0.8.
  - `omr_analysis.py`: script for analyzing the curve of contrast for the OMR response in embedded fish reported in Fig.3 and Fig.S6
  
  ## Lightsheet imaging data analysis:
- Code for replicating the analysis of the functional imaging dataset can be found in the [`ot_imaging_analysis`](https://github.com/portugueslab/xiao_et_al/tree/main/ot_imaging_analysis) folder. To run the analysis:
+ Code for replicating the analysis of the functional imaging dataset can be found in the [`ot_imaging_analysis`](https://github.com/portugueslab/xiao_et_al/tree/main/ot_imaging_analysis) folder.
+- the numbered files `00_fishwise_scores.py`, `01_pool_all_fish_data.py`, `02_fit_rf_gauss.py` contain the preprocessing scripts that compute cell responses strengths, aggregate data, and do the receptive field fit
+- the `fig_[n]_[description].py` files contain the code that generate each of the panels of the paper that pertain to the imaging experiments.
 
 
 ## Instructions for reproducing the analysis
@@ -44,5 +46,7 @@ Reproduce imaging analysis:
     - `> python /.../xiao_et_al/ot_imaging_analysis/00_fishwise_scores.py` (extract responses for every fish), 
     - `> python /.../xiao_et_al/ot_imaging_analysis/01_pool_all_fish_data.py` (assemble pooled dataframe with data from all fish) 
     - `> python /.../xiao_et_al/ot_imaging_analysis/02_fit_rf_gauss.py` (gaussian fit)
-2. At this point, running any of the figure generation scripts `fig_[x]_[name].py` will save in the figure saving location the relative panel
+2. At this point, running any of the figure generation scripts `fig_[figN]_[descritpion].py` will save in the figure saving location the panel `figN` from the paper.
+
+Alternatively, the `run_complete_analysis-py` script run the entire analysis in the correct order.
 
