@@ -1,20 +1,20 @@
-from pathlib import Path
+"""This script loads the imaging data of each fish and calculate reliability scores
+for all its ROIs, as well as receptive field curves.
+It saves the results in dataframes that also contain positions of the ROIs before and
+after manual registration, etc.
+"""
+
 import numpy as np
 from bouter import EmbeddedExperiment
 import pandas as pd
 from tqdm import tqdm
 import flammkuchen as fl
-from configparser import ConfigParser
+from xiao_et_al_utils.defaults import IMAGING_DATA_MASTER_PATH
 
 from bouter.utilities import crop, reliability
 from xiao_et_al_utils.behavior_and_stimuli import stimulus_df_from_exp0070
 from xiao_et_al_utils.imaging import center_on_peak, preprocess_traces
 
-# Data path:
-config = ConfigParser()
-config.read('param_conf.ini')
-
-master_path = Path(config.get('main', 'data_path'))
 # Windows for stimulus cropping for reliability index,
 # padding with pre- and post- pause (in seconds):
 PRE_INT_S = 2
@@ -30,16 +30,16 @@ RSP_END_S = 4
 PX_SIZE = 0.6
 
 # Manually defined offsets for rigid transformation:
-all_offsets = fl.load(master_path / "manual_alignment_offsets.h5")
+all_offsets = fl.load(IMAGING_DATA_MASTER_PATH / "manual_alignment_offsets.h5")
 
 # Abbreviation of genotype from logging:
 GEN_ABBR_DICT = {"Huc:H2B-GCaMP6s;olig1:Ntr": "OPC-abl",
                  "Huc:H2B-GCaMP6s": "MTZ-cnt"}
 
 # find all data-containing folders:
-path_list = [f.parent for f in master_path.glob("*/data_from_suite2p_unfiltered.h5")]
+path_list = [f.parent for f in IMAGING_DATA_MASTER_PATH.glob("*/data_from_suite2p_unfiltered.h5")]
 for path in tqdm(path_list):
-    # Load experiment metadata:
+    # Load experiment metadata using bouter class to read Stytra data:
     exp = EmbeddedExperiment(path)
     gen_long = exp["general"]["animal"]["genotype"]
     gen = GEN_ABBR_DICT[gen_long]
@@ -127,4 +127,4 @@ for path in tqdm(path_list):
     fl.save(path / "cell_df.h5", df)
 
 # Save for quick loading in cumulative plots:
-fl.save(master_path / "stim_pos.h5", unique_stim_pos)
+fl.save(IMAGING_DATA_MASTER_PATH / "stim_pos.h5", unique_stim_pos)

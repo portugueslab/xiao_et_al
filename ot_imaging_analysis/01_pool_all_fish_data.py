@@ -1,3 +1,7 @@
+"""This script put together in teo pandas DataFrames a registry of all experiments
+ (exp_df) and the reliability scores and tuning curves from all cells from all
+ experiments """
+
 import pandas as pd
 import flammkuchen as fl
 from tqdm import tqdm

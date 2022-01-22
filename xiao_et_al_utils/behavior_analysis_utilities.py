@@ -1,137 +1,22 @@
-import json
-from pathlib import Path
 import pandas as pd
 import numpy as np
-from numba import jit
+from numba import njit
 
 
-class Experiment(dict):
-    """Utility class to load stytra files, across versions. It simply provide an API
-    to access easily data and metadata from a behavioral experiment. There might be some redundant
-    code for loading across different Stytra versions formats.
-
-    Parameters
-    ----------
-    path :
-
-
-    Returns
-    -------
-
-    """
-
-    log_mapping = dict(
-        stimulus_param_log=["dynamic_log", "stimulus_log", "stimulus_param_log"],
-        estimator_log=["estimator_log"],
-        behavior_log=["tracking_log", "log", "behavior_log"],
-    )
-
-    def __init__(self, path, session_id=None):
-        # Prepare path:
-        inpath = Path(path)
-
-        if inpath.suffix == ".json":
-            self.path = inpath.parent
-            session_id = inpath.name.split("_")[0]
-
-        else:
-            self.path = Path(path)
-
-            if session_id is None:
-                meta_files = list(self.path.glob("*metadata.json"))
-
-                # Load metadata:
-                if len(meta_files) == 0:
-                    raise FileNotFoundError("No metadata file in specified path!")
-                elif len(meta_files) > 1:
-                    raise FileNotFoundError(
-                        "Multiple metadata files in specified path!"
-                    )
-                else:
-                    session_id = str(meta_files[0].name).split("_")[0]
-
-        self.session_id = session_id
-        metadata_file = self.path / (session_id + "_metadata.json")
-
-        source_metadata = json.load(open(metadata_file))
-
-        # Temporary workaround:
-        try:
-            source_metadata["behavior"] = source_metadata.pop("tracking")
-        except KeyError:
-            pass
-
-        super().__init__(**source_metadata)
-
-        self._stimulus_param_log = None
-        self._behavior_log = None
-        self._estimator_log = None
-
-    def _get_log(self, log_name):
-        uname = "_" + log_name
-
-        if getattr(self, uname) is None:
-            for possible_name in self.log_mapping[log_name]:
-                try:
-                    logname = next(
-                        self.path.glob(self.session_id + "_" + possible_name + ".*")
-                    ).name
-                    setattr(self, uname, self._load_log(logname))
-                    break
-                except StopIteration:
-                    pass
-            else:
-                raise ValueError(log_name + " does not exist")
-
-        return getattr(self, uname)
-
-    @property
-    def stimulus_param_log(self):
-        return self._get_log("stimulus_param_log")
-
-    @property
-    def behavior_log(self):
-        return self._get_log("behavior_log")
-
-    def _load_log(self, data_name):
-        """
-
-        Parameters
-        ----------
-        data_name :
-
-
-        Returns
-        -------
-
-        """
-
-        file = self.path / data_name
-        if file.suffix == ".csv":
-            return pd.read_csv(str(file), delimiter=";").drop("Unnamed: 0", axis=1)
-        elif file.suffix == ".h5" or file.suffix == ".hdf5":
-            return pd.read_hdf(file)
-        else:
-            raise ValueError(
-                str(data_name) + " format is not supported, trying to load " + str(file)
-            )
-
-    
-#--------------------------------------Bout extraction--------------------------------------#
-
-
-@jit(nopython=True)
+@njit(nopython=True)
 def extract_segments_above_thresh(
-    vel, threshold=0.1, min_duration=20, pad_before=12, pad_after=25
+        vel, threshold=0.1, min_duration=20, pad_before=12, pad_after=25
 ):
     """ Extract bouts from velocity or vigor, numba-ized for speed.
+    This function exists also in bouter, but was used from a local version for the
+    paper analysis and so is duplicated for consistency.
 
     :param vel:  velocity or vigor array to threshold.
     :param threshold: threshold for detection.
     :param min_duration: minimum duration for a bout to be included.
     :param pad_before: n of points for pre-start padding in the cropped segment.
     :param pad_after: n of points for post-end padding in the cropped segment.
-    :return: tuple containing the list of cropped bouts, and a list specifying if 
+    :return: tuple containing the list of cropped bouts, and a list specifying if
     each bout was contiguous or had interruptions of nans in the middle.
     """
     bouts = []
@@ -141,7 +26,7 @@ def extract_segments_above_thresh(
     continuity = False
     i = pad_before + 1
     bout_ended = pad_before
-    
+
     # Loop on the trace and check for contiguous threshold crossing:
     while i < vel.shape[0] - pad_after:
         if np.isnan(vel[i]):
@@ -168,9 +53,6 @@ def extract_segments_above_thresh(
 
     return bouts, connected
 
-
-#--------------------------------------Bout statistics--------------------------------------#
-
 def get_exp_stats(exp, get_spatial_period=False):
     """ Useful for extracing bouts from velocity or vigor, numba-ized for speed.
 
@@ -185,7 +67,7 @@ def get_exp_stats(exp, get_spatial_period=False):
     PAD_AFTER = 5  # Padding after bout, in pts
     
     tail_log_df = exp.behavior_log.set_index("t")  # DataFrame with the tail trace
-    stim_log_df = exp.stimulus_param_log.set_index("t")  # DataFrame with the stimulus
+    stim_log_df = exp.stimulus_log.set_index("t")  # DataFrame with the stimulus
     
     # Calculate average tracking framerate to calculate the window:
     tail_dt = np.diff(tail_log_df.index).mean()
@@ -194,9 +76,9 @@ def get_exp_stats(exp, get_spatial_period=False):
     vigor = tail_log_df["tail_sum"].rolling(int(VIGOR_WIN_SEC/tail_dt), center=True).std().values
     
     # Extract bouts:
-    bouts_idxs, _ = extract_segments_above_thresh(vigor, VIGOR_THR, min_duration=int(MIN_DURATION_S/tail_dt), 
-                                             pad_before=PAD_BEFORE, pad_after=PAD_AFTER, skip_nan=True)
-    
+    bouts_idxs, _ = extract_segments_above_thresh(vigor, VIGOR_THR, min_duration=int(MIN_DURATION_S/tail_dt),
+                                             pad_before=PAD_BEFORE, pad_after=PAD_AFTER)
+
     # Calculate bouts start and end times:
     bout_starts = np.array([tail_log_df["tail_sum"].index[b[0]] for b in bouts_idxs])
     bout_ends = np.array([tail_log_df["tail_sum"].index[b[1]] for b in bouts_idxs])
@@ -239,6 +121,22 @@ def get_exp_stats(exp, get_spatial_period=False):
                                       if "grating_period" in s.keys()]
                 
     return trial_df
+
+
+def get_summary_df(trial_stats_table):
+    trial_stats_table = trial_stats_table.copy()
+    N_TRIALS_EXCLUDE = 10  # Number of initial abituation trials to remove from the statistics
+
+    # Calculate median of computed statistics after excluding abituating trials
+    table = trial_stats_table[N_TRIALS_EXCLUDE:].groupby("spatial_period").median()
+
+    # Calculate fraction of trials with at least one bout
+    trial_stats_table["swimmed_fract"] = (
+                trial_stats_table["bout_n"] > 0).values.astype(np.float)
+    table["swimmed_fract"] = \
+    trial_stats_table[N_TRIALS_EXCLUDE:].groupby("spatial_period").mean()[
+        "swimmed_fract"]
+    return table
 
 
 
