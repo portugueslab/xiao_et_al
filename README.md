@@ -1,3 +1,4 @@
+[![DOI](https://zenodo.org/badge/314481364.svg)](https://zenodo.org/badge/latestdoi/314481364)
 ![example workflow](https://github.com/portugueslab/xiao_et_al/actions/workflows/main.yml/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/portugueslab/xiao_et_al/badge.svg)](https://coveralls.io/github/portugueslab/xiao_et_al)
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
