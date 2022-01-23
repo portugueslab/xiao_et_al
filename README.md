@@ -4,7 +4,7 @@
 ![code style](https://img.shields.io/badge/code%20style-black-black)
 
 
-# Xiao et al - stimuli and behavior analysis code
+# Oligodendrocyte Precursor Cells Sculpt the Visual System by Regulating Axonal Remodeling [protocols and analysis code]
 Stytra stimuli and analysis scripts of Python-based analyses for the publication _Oligodendrocyte Precursor Cells Sculpt the Visual System by Regulating Axonal Remodeling_, Xiao et al, 2022. The code has ben run using `python==3.8`.
 This repo is designed to make the full Python-based analysis presented in the paper fully reproducible. Automatic testing and sample data are provided to ensure the workflow can run. The complete dataset for replicating all the paper plots(~9 GB) can be found [here](https://zenodo.org/record/5894604#.Ye1AuS8w1QI). 
 
