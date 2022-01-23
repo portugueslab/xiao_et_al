@@ -32,6 +32,8 @@ The following experiment scripts were used to run experiments with `stytra==0.8.
 - the numbered files `00_fishwise_scores.py`, `01_pool_all_fish_data.py`, `02_fit_rf_gauss.py` contain the preprocessing scripts that compute cell responses strengths, aggregate data, and do the receptive field fit
 - the `fig_[n]_[description].py` files contain the code that generate each of the panels of the paper that pertain to the imaging experiments.
 
+There is an additional file, `run_suite2p.py`, that was used to align the imaging, segment the ROI and extract their fluorescence traces using `suite2p==0.7.2`. Since the raw imaging data is too big to be shared, only the results of this script are shared to reproduce the paper figures, and the script is kept here only to log the parameters used with the `suite2p` algorithm.
+
 
 ## Instructions for reproducing the analysis
 Below are the instructions to reproduce all the Python analysis of the paper.
@@ -39,9 +41,24 @@ Below are the instructions to reproduce all the Python analysis of the paper.
 Download data and clone repo:
 1. Download the data from [here](https://zenodo.org/record/5894604#.Ye1AuS8w1QI)
 2. Uncompress locally the folder
-3. Clone the `xiao_et_al` repo on your computer
-4. from terminal, `cd` to the package location and install it in editable mode with `pip install -e . `
-5. change you local param_conf.ini file in the repo, setting the argument for data location to point to the location of the downloaded data folder
+3. From the terminal, clone the `xiao_et_al` repo on your computer:
+    ```bash
+    > git clone https://github.com/portugueslab/xiao_et_al
+    ```
+5. `cd` to the package location:
+    ```bash
+    > cd xiao_et_al
+    ```
+6. [Optional] Create a new environment to run the script:
+    ```bash
+    > conda create -n xiaotest python==3.8
+    > conda activate xiaotest
+    ```
+7. and install it in editable mode:
+    ```bash
+    > pip install -e . 
+    ```
+7. Find you local param_conf.ini file in the repo, and change it to set the argument for data location to point to the location of the downloaded data folder
 
 #### Reproduce behavior analysis:
 1. for the freely swimming analysis, run `> python /.../xiao_et_al/behavior_analysis/freely_swimming_analysis.py`
@@ -57,8 +74,8 @@ Download data and clone repo:
 #### Reproduce entire analysis through tests:
 The paper figures can also be all generated in the data folder running `pytest` in the repo after having installed the `[dev]` dependencies:
 ```bash
-pip install -e .[dev]
-pytest
+> pip install -e .[dev]
+> pytest
 ```
 
 
