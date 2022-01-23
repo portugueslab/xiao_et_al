@@ -164,7 +164,7 @@ def get_summary_df(trial_stats_table):
     # Calculate fraction of trials with at least one bout
     trial_stats_table["swimmed_fract"] = (
         trial_stats_table["bout_n"] > 0
-    ).values.astype(np.float)
+    ).values.astype(float)
     table["swimmed_fract"] = (
         trial_stats_table[N_INIT_TRIALS_EXCLUDE:]
         .groupby("spatial_period")

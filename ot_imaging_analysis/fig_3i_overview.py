@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import flammkuchen as fl
 import numpy as np
 import seaborn as sns
@@ -100,4 +98,4 @@ an_ax.text(
 
 despine(an_ax, sides="all")
 
-save_figure(Path(__file__).stem)
+save_figure("fig_3i")
