@@ -1,6 +1,12 @@
+![example workflow](https://github.com/portugueslab/xiao_et_al/actions/workflows/main.yml/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/portugueslab/xiao_et_al/badge.svg)](https://coveralls.io/github/portugueslab/xiao_et_al)
+[![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+![code style](https://img.shields.io/badge/code%20style-black-black)
+
+
 # Xiao et al - stimuli and behavior analysis code
 Stytra stimuli and analysis scripts of Python-based analyses for the publication _Oligodendrocyte Precursor Cells Sculpt the Visual System by Regulating Axonal Remodeling_, Xiao et al, 2022. The code has ben run using `python==3.8`.
-This repo is designed to make the full Python-based analysis presented in the paper fully reproducible from the data, which are shared in: TODO link to zenodo
+This repo is designed to make the full Python-based analysis presented in the paper fully reproducible. Automatic testing and sample data are provided to ensure the workflow can run. The complete dataset for replicating all the paper plots(~9 GB) can be found [here](10.5281/zenodo.5893570). 
 
 ## Description of the repo
 The repo contains the following module:
@@ -31,11 +37,11 @@ The following experiment scripts were used to run experiments with `stytra==0.8.
 Below are the instructions to reproduce all the Python analysis of the paper.
 
 Download data and clone repo:
-1. Download the data from TODO link to zenodo
+1. Download the data from [here](10.5281/zenodo.5893570)
 2. Uncompress locally the folder
 3. Clone the `xiao_et_al` repo on your computer
 4. from terminal, `cd` to the package location and install it in editable mode with `pip install -e . `
-5. change the local [param_conf.ini](https://github.com/portugueslab/xiao_et_al/blob/main/ot_imaging_analysis/param_conf.ini) file argument for data location to point to the location of the downloaded data folder
+5. change you local param_conf.ini file in the repo, setting the argument for data location to point to the location of the downloaded data folder
 
 Reproduce behavior analysis:
 1. for the freely swimming analysis, run `> python /.../xiao_et_al/behavior_analysis/freely_swimming_analysis.py`
