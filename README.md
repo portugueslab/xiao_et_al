@@ -1,3 +1,9 @@
+![example workflow](https://github.com/portugueslab/xiao_et_al/actions/workflows/main.yml/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/portugueslab/xiao_et_al/badge.svg)](https://coveralls.io/github/portugueslab/xiao_et_al)
+[![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+![code style](https://img.shields.io/badge/code%20style-black-black)
+
+
 # Xiao et al - stimuli and behavior analysis code
 Stytra stimuli and analysis scripts of Python-based analyses for the publication _Oligodendrocyte Precursor Cells Sculpt the Visual System by Regulating Axonal Remodeling_, Xiao et al, 2022. The code has ben run using `python==3.8`.
 This repo is designed to make the full Python-based analysis presented in the paper fully reproducible from the data, which are shared in: TODO link to zenodo
