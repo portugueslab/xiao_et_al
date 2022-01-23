@@ -6,7 +6,7 @@
 
 # Xiao et al - stimuli and behavior analysis code
 Stytra stimuli and analysis scripts of Python-based analyses for the publication _Oligodendrocyte Precursor Cells Sculpt the Visual System by Regulating Axonal Remodeling_, Xiao et al, 2022. The code has ben run using `python==3.8`.
-This repo is designed to make the full Python-based analysis presented in the paper fully reproducible. Automatic testing and sample data are provided to ensure the workflow can run. The complete dataset for replicating all the paper plots(~9 GB) can be found [here](10.5281/zenodo.5893570). 
+This repo is designed to make the full Python-based analysis presented in the paper fully reproducible. Automatic testing and sample data are provided to ensure the workflow can run. The complete dataset for replicating all the paper plots(~9 GB) can be found [here](https://zenodo.org/record/5894604#.Ye1AuS8w1QI). 
 
 ## Description of the repo
 The repo contains the following module:
@@ -37,22 +37,28 @@ The following experiment scripts were used to run experiments with `stytra==0.8.
 Below are the instructions to reproduce all the Python analysis of the paper.
 
 Download data and clone repo:
-1. Download the data from [here](10.5281/zenodo.5893570)
+1. Download the data from [here](https://zenodo.org/record/5894604#.Ye1AuS8w1QI)
 2. Uncompress locally the folder
 3. Clone the `xiao_et_al` repo on your computer
 4. from terminal, `cd` to the package location and install it in editable mode with `pip install -e . `
 5. change you local param_conf.ini file in the repo, setting the argument for data location to point to the location of the downloaded data folder
 
-Reproduce behavior analysis:
+#### Reproduce behavior analysis:
 1. for the freely swimming analysis, run `> python /.../xiao_et_al/behavior_analysis/freely_swimming_analysis.py`
 2. for the OMR analysis, run `> python /.../xiao_et_al/behavior_analysis/omr_analysis.py`
 
-Reproduce imaging analysis:
+#### Reproduce imaging analysis:
 1. frun in order the batch processing scripts (they can take up to several tens of minutes to run):  
     - `> python /.../xiao_et_al/ot_imaging_analysis/00_fishwise_scores.py` (extract responses for every fish), 
     - `> python /.../xiao_et_al/ot_imaging_analysis/01_pool_all_fish_data.py` (assemble pooled dataframe with data from all fish) 
     - `> python /.../xiao_et_al/ot_imaging_analysis/02_fit_rf_gauss.py` (gaussian fit)
 2. At this point, running any of the figure generation scripts `fig_[figN]_[descritpion].py` will save in the figure saving location the panel `figN` from the paper.
 
-Alternatively, the `run_complete_analysis.py` script run the entire analysis in the correct order.
+#### Reproduce entire analysis through tests
+The paper figures can also be all generated in the data folder running `pytest` in the repo after having installed the `[dev]` dependencies:
+```bash
+pip install -e .[dev]
+pytest
+```
+
 
