@@ -58,7 +58,11 @@ Download data and clone repo:
     ```bash
     > pip install -e . 
     ```
-7. Find you local param_conf.ini file in the repo, and change it to set the argument for data location to point to the location of the downloaded data folder
+7. Find you local param_conf.ini file in the repo, and change it to set the argument for data location to point to the location of the downloaded data folder. E.g.
+    ```ini
+   data_path=C:\Users\...\xiao_et_al_dataset
+   ```
+
 
 #### Reproduce behavior analysis:
 1. for the freely swimming analysis, run `> python /.../xiao_et_al/behavior_analysis/freely_swimming_analysis.py`
@@ -77,5 +81,7 @@ The paper figures can also be all generated in the data folder running `pytest` 
 > pip install -e .[dev]
 > pytest
 ```
+
+Code have been developed in `macOS`. Tests run on `Unix` in GitHub Actions, and the workflow has been tested on a `Windows` machine.
 
 
