@@ -140,41 +140,46 @@ def hist_and_scatter(
     return axs, scat_axs
 
 
-figsize = (6, 3.5)
-fig_d = plt.figure(figsize=figsize)
-axs, scat_axs = hist_and_scatter(
-    fig_d,
-    hist_key="max_rel",
-    hist_range=np.arange(0, 1, 0.02),
-    hist_label="reliability score",
-    scatter_key="above_rel_thr",
-    scatter_coef=1,
-    scatter_label="responsive rois (n)",
-)
-axs.axvline(0.5, lw=0.5, c=(0.4,) * 3)
-save_figure("fig_3k_s7a_hist")
+def generate_figure():
+    figsize = (6, 3.5)
+    fig_d = plt.figure(figsize=figsize)
+    axs, scat_axs = hist_and_scatter(
+        fig_d,
+        hist_key="max_rel",
+        hist_range=np.arange(0, 1, 0.02),
+        hist_label="reliability score",
+        scatter_key="above_rel_thr",
+        scatter_coef=1,
+        scatter_label="responsive rois (n)",
+    )
+    axs.axvline(0.5, lw=0.5, c=(0.4,) * 3)
+    save_figure("fig_3k_s7a_hist")
 
-fig_e = plt.figure(figsize=figsize)
-axs, scat_axs = hist_and_scatter(
-    fig_e,
-    hist_key="max_amp",
-    hist_range=np.arange(0, 5, 0.2),
-    hist_label="response ampl.  ($\Delta F/F$)",
-    scatter_key="mn_amplitude",
-    scatter_label="average ampl. ($\Delta F/F$)",
-    ylim=(0, 1.0),
-)
-save_figure("fig_3l_s7b_hist")
+    fig_e = plt.figure(figsize=figsize)
+    axs, scat_axs = hist_and_scatter(
+        fig_e,
+        hist_key="max_amp",
+        hist_range=np.arange(0, 5, 0.2),
+        hist_label="response ampl.  ($\Delta F/F$)",
+        scatter_key="mn_amplitude",
+        scatter_label="average ampl. ($\Delta F/F$)",
+        ylim=(0, 1.0),
+    )
+    save_figure("fig_3l_s7b_hist")
 
-fig_g = plt.figure(figsize=figsize)
-axs, scat_axs = hist_and_scatter(
-    fig_g,
-    hist_key="fit_sigma",
-    hist_range=np.arange(0, 8, 0.2),
-    hist_label="$\sigma$",
-    scatter_key="mean_sigma",
-    scatter_label="average $\sigma$",
-    ylim=(0, 3.5),
-)
+    fig_g = plt.figure(figsize=figsize)
+    axs, scat_axs = hist_and_scatter(
+        fig_g,
+        hist_key="fit_sigma",
+        hist_range=np.arange(0, 8, 0.2),
+        hist_label="$\sigma$",
+        scatter_key="mean_sigma",
+        scatter_label="average $\sigma$",
+        ylim=(0, 3.5),
+    )
 
-save_figure("fig_s7ef_hist")
+    save_figure("fig_s7ef_hist")
+
+
+if __name__ == "__main__":
+    generate_figure()
