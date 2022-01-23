@@ -15,7 +15,7 @@ from xiao_et_al_utils.defaults import (
 @njit
 def extract_segments_above_thresh(
     vel, threshold=0.1, min_duration=20, pad_before=12, pad_after=25
-):
+):  # pragma: no cover
     """Extract bouts from velocity or vigor, numba-ized for speed.
     This function exists also in bouter, but was used from a local version for the
     paper analysis and so is duplicated for consistency.

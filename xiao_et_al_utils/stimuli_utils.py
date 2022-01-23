@@ -2,10 +2,6 @@ import numpy as np
 import pandas as pd
 
 
-def fix_fid(cid):
-    return "_".join(cid.split("_")[:2])
-
-
 def stimulus_df_from_exp0070(exp):
     """Generate dataframe of stimulus trials
     from bouter experiments for the optic tectum responses protocol.

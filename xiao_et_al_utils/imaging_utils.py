@@ -12,7 +12,7 @@ def preprocess_traces(traces_in):
 
 
 @njit
-def roll_matrix(input_mat, indexes):
+def roll_matrix(input_mat, indexes):  # pragma: no cover
     output_mat = np.empty_like(input_mat)
 
     for i in prange(output_mat.shape[1]):
