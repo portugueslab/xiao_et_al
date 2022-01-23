@@ -23,6 +23,7 @@ sns.set(style="ticks", palette="deep")
 # physical setup:
 mm_pixel = ARENA_SIZE_MM / ARENA_SIZE_PIXELS
 
+assert FREELY_SWIM_DATA_MASTER_PATH.exists()
 assert len(list(FREELY_SWIM_DATA_MASTER_PATH.glob("*"))) > 0
 # Loop over all groups subdirectories:
 for master_path in FREELY_SWIM_DATA_MASTER_PATH.glob("*"):
