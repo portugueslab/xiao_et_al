@@ -79,8 +79,6 @@ cell_indexes = (0, 1) if DEMO_MODE else (30, 10818)
 for c_n, (i_cell, (xpos, ypos, xside, yside)) in enumerate(
     zip(cell_indexes, bounds_lims)
 ):
-    if i_cell > coords.shape[0] - 1:
-        i_cell = coords.shape[0] - 1
 
     cell_plane = int(coords[i_cell, 0])  # plane in which the cell is found
 
@@ -199,6 +197,7 @@ for c_n, (i_cell, (xpos, ypos, xside, yside)) in enumerate(
         colors=[(0.5,) * 3],
     )
     anatomy_ax.axis("off")
+assert c_n > 0
 
 
 save_figure(Path(__file__).stem)

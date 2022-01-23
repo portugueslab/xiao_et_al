@@ -23,7 +23,7 @@ sns.set(style="ticks", palette="deep")
 # physical setup:
 mm_pixel = ARENA_SIZE_MM / ARENA_SIZE_PIXELS
 
-
+assert len(list(FREELY_SWIM_DATA_MASTER_PATH.glob("*"))) > 0
 # Loop over all groups subdirectories:
 for master_path in FREELY_SWIM_DATA_MASTER_PATH.glob("*"):
     # Find list with all fish directories:
@@ -33,6 +33,7 @@ for master_path in FREELY_SWIM_DATA_MASTER_PATH.glob("*"):
 
     distances_travelled = []
 
+    assert len(list(master_path.glob("*f[0-9]"))) > 0
     for fish_path in tqdm(list(master_path.glob("*f[0-9]"))):
         beh_df = Experiment(fish_path).behavior_log
         beh_df = beh_df.set_index(["t"])  # set time as index
