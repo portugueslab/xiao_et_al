@@ -11,7 +11,7 @@ with open("README.md") as f:
 
 setup(
     name="xiao_et_al_utils",
-    version="1.0.3",
+    version="1.0.4",
     description="Behavior and imaging analysis for Xiao et al.",
     install_requires=requirements,
     long_description=long_description,
