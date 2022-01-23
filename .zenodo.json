@@ -1,0 +1,12 @@
+{
+    "creators": [
+        {
+            "orcid": "0000-0003-4001-0564",
+            "affiliation": "Institute of Neuroscience, Technical University of Munich, Germany",
+            "name": "Petrucco, Luigi"
+        }
+    ],
+    "description": "<p>Stytra stimuli and analysis notebooks for Xiao et al, 2022.</p>\n\n<p>Consult the README.md or the GitHub repo&nbsp;<a href=\"https://github.com/portugueslab/xiao_et_al/tree/v1.0.2\">https://github.com/portugueslab/xiao_et_al</a>&nbsp;to find the instructions for running the code.&nbsp;</p>",
+    "title": "Xiao et al, Oligodendrocyte Precursor Cells Sculpt the Visual System by Regulating Axonal Remodeling [Dataset]",
+    "keywords": ["Neuroscience", "Imaging", "Behavior", "Zebrafish"]
+}
