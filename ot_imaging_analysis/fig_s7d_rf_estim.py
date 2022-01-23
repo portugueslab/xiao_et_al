@@ -6,7 +6,11 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 from scipy.optimize import curve_fit
 
-from xiao_et_al_utils.defaults import IMAGING_DATA_MASTER_PATH, REL_SCORE_THR, DEMO_MODE
+from xiao_et_al_utils.defaults import (
+    DEMO_MODE,
+    IMAGING_DATA_MASTER_PATH,
+    REL_SCORE_THR,
+)
 from xiao_et_al_utils.plotting_utils import despine, save_figure
 
 

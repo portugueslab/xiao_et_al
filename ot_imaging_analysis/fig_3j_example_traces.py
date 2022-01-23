@@ -7,7 +7,7 @@ from bouter import EmbeddedExperiment
 from bouter.utilities import crop
 from matplotlib import pyplot as plt
 
-from xiao_et_al_utils.defaults import IMAGING_DATA_MASTER_PATH, DEMO_MODE
+from xiao_et_al_utils.defaults import DEMO_MODE, IMAGING_DATA_MASTER_PATH
 from xiao_et_al_utils.imaging_utils import preprocess_traces
 from xiao_et_al_utils.plotting_utils import save_figure
 from xiao_et_al_utils.stimuli_utils import stimulus_df_from_exp0070
