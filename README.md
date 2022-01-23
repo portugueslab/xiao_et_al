@@ -54,5 +54,5 @@ Reproduce imaging analysis:
     - `> python /.../xiao_et_al/ot_imaging_analysis/02_fit_rf_gauss.py` (gaussian fit)
 2. At this point, running any of the figure generation scripts `fig_[figN]_[descritpion].py` will save in the figure saving location the panel `figN` from the paper.
 
-Alternatively, the `run_complete_analysis-py` script run the entire analysis in the correct order.
+Alternatively, the `run_complete_analysis.py` script run the entire analysis in the correct order.
 
