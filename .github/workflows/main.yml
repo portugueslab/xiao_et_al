@@ -34,7 +34,7 @@ jobs:
           pip install .[dev]
       - name: Test
         run: |
-          pytest --cov
+          pytest --cov=. tests/
       - name: Coveralls
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,1 +1,8 @@
-include xiao_et_al_utils/xiao_et_al_demo_dataset/*
+include xiao_et_al_utils/xiao_et_al_demo_dataset/freely_swimming/mtz control/200305_f4/*
+include xiao_et_al_utils/xiao_et_al_demo_dataset/freely_swimming/mtz control/200305_f5/*
+include xiao_et_al_utils/xiao_et_al_demo_dataset/OMR/cnt/200206_f1/*
+include xiao_et_al_utils/xiao_et_al_demo_dataset/OMR/ntr/200801_f3/*
+include xiao_et_al_utils/xiao_et_al_demo_dataset/receptive_field_imaging/*
+include xiao_et_al_utils/xiao_et_al_demo_dataset/receptive_field_imaging/210611_f2/*
+include xiao_et_al_utils/xiao_et_al_demo_dataset/receptive_field_imaging/210611_f5/*
+
